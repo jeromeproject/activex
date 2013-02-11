@@ -1,8 +1,17 @@
-function update_content(channel)
+function update_content(src)
 {
 	var iframe = document.getElementById('content');
-	iframe.src = "remote_viewer.html?channel="+channel;
-	
-	var tip = document.getElementById('current_channel');
-	tip.innerHTML = "Current channel = " + channel;
+	iframe.src = src;
+}
+
+function set_liveview(channel)
+{
+	src = "remote_viewer.html?channel="+channel;
+	update_content(src);
+}
+
+function set_playback(channel)
+{
+	src = "remote_player.html?channel="+channel;
+	update_content(src);
 }

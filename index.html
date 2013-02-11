@@ -16,28 +16,28 @@
 <body>
 <table border=1 width=100%>
 <tr>
-	<td width=15%>
-		Settings<br>
-		ip:<input id=address type=text></input>
-		port:<input id=port type=text></input>
-		user:<input id=user type=text></input>
-		pw:<input id=passwd type=text></input>
+	<td width=20%>
+		Information<br>
+		<div class=layout2>Server=<div id=address>172.16.1.100</div></div>
+		<div class=layout2>port=<div id=port>17860</div></div>
+		<div class=layout2>user=<div id=user>test</div></div>
+		<div class=layout2>pw=<div id=passwd>test</div></div>
 		<br><br>
 		Live view<br>
-		<a class=layout2 href="#" onClick="update_content('0');">Channel 1</a><br>
-		<a class=layout2 href="#" onClick="update_content('1');">Channel 2</a><br>
-		<a class=layout2 href="#" onClick="update_content('2');">Channel 3</a><br>
-		<a class=layout2 href="#" onClick="update_content('3');">Channel 4</a><br>
+		<a class=layout2 href="#" onClick="set_liveview('0');">Channel 1</a><br>
+		<a class=layout2 href="#" onClick="set_liveview('1');">Channel 2</a><br>
+		<a class=layout2 href="#" onClick="set_liveview('2');">Channel 3</a><br>
+		<a class=layout2 href="#" onClick="set_liveview('3');">Channel 4</a><br>
 		<br>
-		File browser<br>
-		<div class=layout2>Channel1</div>
-		<div class=layout3>file1<br>file2<br>file3<br></div>
-		<div class=layout2>Channel2</div>
-		<div class=layout2>Channel3</div>
-		<div class=layout2>Channel4</div>
+		Playback<br>
+		<a class=layout2 href="#" onClick="set_playback('0');">Channel 1</a><br>
+		<a class=layout2 href="#" onClick="set_playback('1');">Channel 2</a><br>
+		<a class=layout2 href="#" onClick="set_playback('2');">Channel 3</a><br>
+		<a class=layout2 href="#" onClick="set_playback('3');">Channel 4</a><br>
+		<br>
+		<a href='#' onClick="update_content('setting.html');">Setting</a>
 	</td>
 	<td width=80%>
-		<div id=current_channel>Current channel = 0</div> 
 		<iframe 
 			id          ="content" 
 			frameborder ="1" 

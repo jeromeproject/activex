@@ -8,13 +8,13 @@ function get_channel()
 	}
 }
 
-function get_param(ip, username, password, channel)
+function get_param(ip, port, username, password, channel)
 {
 	var param = "";
 	//param += "View0_is_local=0\n"
 	//param += "View0_enable_event_sound=0\n"
 	param += "View0_Address="+ip+"\n"
-	param += "View0_view_port_n=17860\n"
+	param += "View0_view_port_n="+port+"\n"
 	param += "View0_lookup_from_ns=0\n"
 	param += "View0_user_name="+username+"\n"
 	param += "View0_password="+password+"\n"
@@ -29,20 +29,22 @@ function get_param(ip, username, password, channel)
 }
 
 function init()
-{
-	var MIN_CHANNEL = 0,
-		MAX_CHANNEL = 4;
-		
+{	
 	var viewer = document.getElementById('RemoteViewer');
 	viewer.width = 720;
 	viewer.height = 480;
 	var channel = get_channel();
 	if(channel >= MIN_CHANNEL && channel <= MAX_CHANNEL)
 	{
-		var param = get_param("172.16.1.100", "test", "test", channel);
+		var address = parent.document.getElementById('address').innerHTML;
+		var port = parent.document.getElementById('port').innerHTML;
+		var user = parent.document.getElementById('user').innerHTML;
+		var passwd = parent.document.getElementById('passwd').innerHTML;
+		var param = get_param(address, port, user, passwd, channel);
 		if(viewer.ComSetSourceTextSetting(param) == "false")
 		{
 			alert("Set fail");
+			return;
 		}
 		viewer.ComStartNetwork(0);
 	}
