@@ -1,0 +1,53 @@
+<html>
+<head>
+<script type="text/javascript" src="index.js"></script>
+<style type="text/css"> 
+	.layout2
+	{ 
+		margin-left:50px;
+	} 
+	
+	.layout3
+	{
+		margin-left:100px;
+	}
+</style>
+</head>
+<body>
+<table border=1 width=100%>
+<tr>
+	<td width=15%>
+		Settings<br>
+		ip:<input id=address type=text></input>
+		port:<input id=port type=text></input>
+		user:<input id=user type=text></input>
+		pw:<input id=passwd type=text></input>
+		<br><br>
+		Live view<br>
+		<a class=layout2 href="#" onClick="update_content('0');">Channel 1</a><br>
+		<a class=layout2 href="#" onClick="update_content('1');">Channel 2</a><br>
+		<a class=layout2 href="#" onClick="update_content('2');">Channel 3</a><br>
+		<a class=layout2 href="#" onClick="update_content('3');">Channel 4</a><br>
+		<br>
+		File browser<br>
+		<div class=layout2>Channel1</div>
+		<div class=layout3>file1<br>file2<br>file3<br></div>
+		<div class=layout2>Channel2</div>
+		<div class=layout2>Channel3</div>
+		<div class=layout2>Channel4</div>
+	</td>
+	<td width=80%>
+		<div id=current_channel>Current channel = 0</div> 
+		<iframe 
+			id          ="content" 
+			frameborder ="1" 
+			scrolling   ="no" 
+			style       ="width:100%;height:500px;"
+			src			="remote_viewer.html?channel=0"
+		>
+		</iframe>
+	</td>
+</tr>
+</table>
+</body>
+</html>
