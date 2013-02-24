@@ -21,8 +21,8 @@ function init()
 		var user = parent.document.getElementById('user').innerHTML;
 		var passwd = parent.document.getElementById('passwd').innerHTML;
 		player.ComSetupConnect(0, address, port, user, passwd, undefined, undefined, undefined, undefined, channel);
-		player.ComOpenPlayer();
-		//player.ComEmbedPlayer(0);
+		//player.ComOpenPlayer();
+		player.ComEmbedPlayer(0);
 	}
 	else
 	{

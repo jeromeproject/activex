@@ -1,10 +1,39 @@
 <HTML>
-<HEAD>
-<TITLE>Remote player</TITLE>
-<script type="text/javascript" src="library.js"></script>
-<script type="text/javascript" src="remote_player.js"></script>
-</HEAD>
-<BODY onload="init()">
-<OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT>
-</BODY>
+	<HEAD>
+		<TITLE>Remote player</TITLE>
+		<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
+		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
+		<script type="text/javascript" src="library.js"></script>
+		<script type="text/javascript" src="remote_player.js"></script>
+		<script type="text/javascript">
+			var setting =
+			{
+			};
+			var nodes =
+			[
+				{
+					name:"Filelist",
+					open:true,
+					isParent:true,
+					children:
+					[
+					]
+				}
+			];
+			
+			$(document).ready(function()
+			{
+				zTreeObj = $.fn.zTree.init($("#filetree"), setting, nodes);
+
+			});
+		</script>
+	</HEAD>
+	<BODY onload="init()">
+		<div id="player">
+			<OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT>
+		</div>
+		<div id="filetree" class='ztree'>
+		</div>
+	</BODY>
 </HTML>

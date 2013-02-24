@@ -15,3 +15,12 @@ function set_playback(channel)
 	src = "remote_player.html?channel="+channel;
 	update_content(src);
 }
+
+function get_filelist(channel)
+{
+	return [ "fileA", "fileB", "fileC" ];
+}
+
+function init()
+{
+}

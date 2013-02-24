@@ -1,53 +1,106 @@
 <html>
 <head>
-<script type="text/javascript" src="index.js"></script>
-<style type="text/css"> 
-	.layout2
-	{ 
-		margin-left:50px;
-	} 
-	
-	.layout3
-	{
-		margin-left:100px;
-	}
-</style>
+	<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
+	<script type="text/javascript" src="library.js"></script>
+	<script type="text/javascript" src="tree.js"></script>
+	<script type="text/javascript" src="index.js"></script>
+	<SCRIPT type="text/javascript">
+		var setting = 
+		{
+			callback: 
+			{
+					onCollapse: tree_update_node,
+					onExpand: tree_update_node
+			},			
+			data:
+			{
+				keep:
+				{
+					parent: true
+				}
+			}
+		};
+
+		var zNodes =
+		[
+			{ 
+				name:"LiveView", 
+				open:true,
+				children: 
+				[
+					{
+						name: "Channel1",
+						click:"set_liveview('0')"
+					},
+					{
+						name: "Channel2",
+						click:"set_liveview('1')"
+					},
+					{
+						name: "Channel3",
+						click:"set_liveview('2')"
+					},
+					{
+						name: "Channel4",
+						click:"set_liveview('3')"
+					}
+				]
+			},
+			{ 
+				name:"Playback",
+				open:true,
+				children: 
+				[
+					{ 
+						name: "Channel1",
+						isParent:true
+					},
+					{ 
+						name: "Channel2",
+						isParent:true
+					},
+					{ 
+						name: "Channel3",
+						isParent:true
+					},
+					{ 
+						name: "Channel4",
+						isParent:true
+					}
+				]
+			},
+			{
+				name:"Setting",
+				click:"update_content('setting.html')"
+			},
+		];
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#tree"), setting, zNodes);
+		});
+	</SCRIPT>
+
 </head>
-<body>
-<table border=1 width=100%>
-<tr>
-	<td width=20%>
-		Information<br>
-		<div class=layout2>Server=<div id=address>172.16.1.100</div></div>
-		<div class=layout2>port=<div id=port>17860</div></div>
-		<div class=layout2>user=<div id=user>test</div></div>
-		<div class=layout2>pw=<div id=passwd>test</div></div>
-		<br><br>
-		Live view<br>
-		<a class=layout2 href="#" onClick="set_liveview('0');">Channel 1</a><br>
-		<a class=layout2 href="#" onClick="set_liveview('1');">Channel 2</a><br>
-		<a class=layout2 href="#" onClick="set_liveview('2');">Channel 3</a><br>
-		<a class=layout2 href="#" onClick="set_liveview('3');">Channel 4</a><br>
-		<br>
-		Playback<br>
-		<a class=layout2 href="#" onClick="set_playback('0');">Channel 1</a><br>
-		<a class=layout2 href="#" onClick="set_playback('1');">Channel 2</a><br>
-		<a class=layout2 href="#" onClick="set_playback('2');">Channel 3</a><br>
-		<a class=layout2 href="#" onClick="set_playback('3');">Channel 4</a><br>
-		<br>
-		<a href='#' onClick="update_content('setting.html');">Setting</a>
-	</td>
-	<td width=80%>
-		<iframe 
-			id          ="content" 
-			frameborder ="1" 
-			scrolling   ="no" 
-			style       ="width:100%;height:500px;"
-			src			="remote_viewer.html?channel=0"
-		>
-		</iframe>
-	</td>
-</tr>
-</table>
+<body onload="init()">
+	<table border=1 width=100%>
+		<tr>
+			<td width=20%>
+				<div id='tree' class="ztree">
+				</div>
+			</td>
+			<td width=80%>
+				<iframe 
+					id          ="content" 
+					frameborder ="1" 
+					scrolling   ="no" 
+					style       ="width:100%;height:500px;"
+					src			="remote_viewer.html?channel=0"
+				>
+				</iframe>
+			</td>
+		</tr>
+	</table>
 </body>
 </html>
