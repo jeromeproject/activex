@@ -16,11 +16,6 @@ function set_playback(channel)
 	update_content(src);
 }
 
-function get_filelist(channel)
-{
-	return [ "fileA", "fileB", "fileC" ];
-}
-
 function init()
 {
 }

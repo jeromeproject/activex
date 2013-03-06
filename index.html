@@ -11,8 +11,10 @@
 		{
 			callback: 
 			{
-					onCollapse: tree_update_node,
-					onExpand: tree_update_node
+				beforeExpand:tree_disable_expand,
+				beforeCollapse:tree_disable_collapse
+				//onCollapse: tree_update_node,
+				//onExpand: tree_update_node
 			},			
 			data:
 			{
@@ -20,6 +22,10 @@
 				{
 					parent: true
 				}
+			},
+			view:
+			{
+				showIcon:false
 			}
 		};
 
@@ -55,19 +61,19 @@
 				[
 					{ 
 						name: "Channel1",
-						isParent:true
+						click:"set_playback('0')"
 					},
 					{ 
 						name: "Channel2",
-						isParent:true
+						click:"set_playback('1')"
 					},
 					{ 
 						name: "Channel3",
-						isParent:true
+						click:"set_playback('2')"
 					},
 					{ 
 						name: "Channel4",
-						isParent:true
+						click:"set_playback('3')"
 					}
 				]
 			},
@@ -78,25 +84,28 @@
 		];
 
 		$(document).ready(function(){
-			$.fn.zTree.init($("#tree"), setting, zNodes);
+			$.fn.zTree.init($("#maintree"), setting, zNodes);
 		});
 	</SCRIPT>
 
 </head>
 <body onload="init()">
-	<table border=1 width=100%>
+	<table border=1 width=100% height=600px>
 		<tr>
 			<td width=20%>
-				<div id='tree' class="ztree">
-				</div>
+				<div id='address'>127.0.0.1</div>
+				<div id='port'>17860</div>
+				<div id='user'>test</div>
+				<div id='passwd'>test</div>
+				<div id='maintree' class="ztree"></div>
 			</td>
 			<td width=80%>
 				<iframe 
 					id          ="content" 
-					frameborder ="1" 
+					frameborder ="0" 
 					scrolling   ="no" 
-					style       ="width:100%;height:500px;"
-					src			="remote_viewer.html?channel=0"
+					style       ="width:100%;height:100%;"
+					src			="setting.html"
 				>
 				</iframe>
 			</td>

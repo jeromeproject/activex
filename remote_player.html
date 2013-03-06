@@ -5,10 +5,15 @@
 		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
 		<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
 		<script type="text/javascript" src="library.js"></script>
+		<script type="text/javascript" src="tree.js"></script>
 		<script type="text/javascript" src="remote_player.js"></script>
 		<script type="text/javascript">
 			var setting =
 			{
+				callback:
+				{
+					onClick: set_play_file
+				}
 			};
 			var nodes =
 			[
@@ -29,11 +34,32 @@
 			});
 		</script>
 	</HEAD>
-	<BODY onload="init()">
-		<div id="player">
-			<OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT>
-		</div>
-		<div id="filetree" class='ztree'>
-		</div>
+	<!--<BODY onload="init()">-->
+	<BODY onload="window.setTimeout('init();', 5)");
+		<table width=100%>
+			<tr>
+				<td>
+					<div id="player">
+						<OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT>
+					</div>
+				</td>
+				<td>
+				<div id="filetree" class='ztree'></div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<table>
+					<tr>
+						<td>
+							<div id='play'>play</div>
+						</td>
+						<td>
+							<div id='pause'>pause</div>
+						</td>
+					</tr>
+				</td>
+			</tr>
+		</table>
 	</BODY>
 </HTML>
