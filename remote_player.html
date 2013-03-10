@@ -34,17 +34,16 @@
 			});
 		</script>
 	</HEAD>
-	<!--<BODY onload="init()">-->
-	<BODY onload="window.setTimeout('init();', 5)");
+	<BODY onload="window.setTimeout('init();', 50)");>
 		<table width=100%>
 			<tr>
 				<td>
-					<div id="player">
-						<OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT>
-					</div>
+					<div id="filetree" class='ztree'></div>
 				</td>
+			</tr>
+			<tr>
 				<td>
-				<div id="filetree" class='ztree'></div>
+					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT></div>
 				</td>
 			</tr>
 			<tr>
@@ -52,10 +51,31 @@
 					<table>
 					<tr>
 						<td>
-							<div id='play'>play</div>
+							<button onclick="playback()">PlayBackward</button>
 						</td>
 						<td>
-							<div id='pause'>pause</div>
+							<button onclick="play()">Play</button>
+						</td>
+						<td>
+							<button onclick="pause()">Pause</button>
+						</td>
+						<td>
+							<button onclick="seekback()">SeekBackward</button>
+						</td>
+						<td>
+							<button onclick="seekforward()">SeekForward</button>
+						</td>
+						<td>
+							<button onclick="prevframe()">PrevFrame</button>
+						</td>
+						<td>
+							<button onclick="nextframe()">NextFrame</button>
+						</td>
+						<td>
+							<button onclick="seekbegin()">SeekBegin</button>
+						</td>
+						<td>
+							<button onclick="seekend()">SeekEnd</button>
 						</td>
 					</tr>
 				</td>
