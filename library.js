@@ -1,0 +1,2 @@
+var MIN_CHANNEL = 0;
+var MAX_CHANNEL = 3;
