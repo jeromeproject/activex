@@ -18,9 +18,10 @@ function tree_get_current_node(tree)
 	return tree.getSelectedNodes()[0];
 }
 
+var child_id = 0;
 function tree_append_to_node(tree, parent_node, child_name)
 {
-	var child_node = {name:child_name};
+	var child_node = {name:child_name, id:child_id++};
 	node = tree.addNodes(parent_node, child_node);
 }
 

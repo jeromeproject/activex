@@ -66,7 +66,6 @@ function set_player_action(action)
 
 function get_filelist(channel)
 {
-	//alert("load list");
 	var list = player.ComGetFileListVariant(PLAYER_INDEX);
 	var filename_ary = new Array();
 	var s = new Array();
@@ -92,11 +91,11 @@ function get_channel()
 
 function set_play_file(event, treeId, treeNode)
 {
-	var file_index = treeNode.tId.split("_")[1]-2;
+	var file_index = treeNode.id;
 	var ret = player.ComSelectFilevariant(PLAYER_INDEX, file_index, 0);
 	if(ret.length == 0)
 	{
-		alert("Set file error.");
+		alert("Set file error. "+file_index);
 	}
 	else
 	{
