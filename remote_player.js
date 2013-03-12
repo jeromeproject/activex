@@ -1,5 +1,6 @@
-var PLAYER_INDEX = 0;
-var player;
+var g_PLAYER_INDEX = 0;
+var g_player;
+var g_filename_list;
 
 function pause()
 {
@@ -61,22 +62,21 @@ function set_player_action(action)
 	acts['RPP_SeekEnd_PI'] = 20;
 	// end mapping
 	
-	player.ComPlayback(PLAYER_INDEX, acts[action], 0, 0);
+	g_player.ComPlayback(g_PLAYER_INDEX, acts[action], 0, 0);
 }
 
-function get_filelist(channel)
+function set_play_file(event, treeId, treeNode)
 {
-	var list = player.ComGetFileListVariant(PLAYER_INDEX);
-	var filename_ary = new Array();
-	var s = new Array();
-	s = list.split("\n");
-	for(var i=0; i<s.length-1; i++)
+	var file_index = treeNode.id;
+	var ret = g_player.ComSelectFilevariant(g_PLAYER_INDEX, file_index, 0);
+	if(ret.length == 0)
 	{
-		var filename = player.ComGetFileName(PLAYER_INDEX, i, 0);
-		if(filename.length != 0)
-			filename_ary[i] = filename;
+		alert("Set file error. "+file_index);
 	}
-	return filename_ary;
+	else
+	{
+		play();
+	}
 }
 
 function get_channel()
@@ -89,38 +89,117 @@ function get_channel()
 	}
 }
 
-function set_play_file(event, treeId, treeNode)
+function set_page_index(page_index)
 {
-	var file_index = treeNode.id;
-	var ret = player.ComSelectFilevariant(PLAYER_INDEX, file_index, 0);
-	if(ret.length == 0)
-	{
-		alert("Set file error. "+file_index);
+	var btn = document.getElementById('page_index');
+	btn.value = page_index;
+}
+
+function load_prev()
+{
+	var filetree = get_tree("filetree");
+	var parent_node = filetree.getNodeByParam("name", "Filelist", null);
+	tree_destroy_from_node(filetree, parent_node);
+	
+	parent_node.page_index--;
+	var start = parent_node.page_index * parent_node.page_size;
+	var end = start + parent_node.page_size - 1;
+	var list = g_filename_list;
+	var i;
+	for(i=start; i<end; i++)
+	{			
+		tree_append_to_node(filetree, parent_node, list[i]);
 	}
-	else
-	{
-		play();
+	set_page_index(parent_node.page_index);
+}
+
+function load_next()
+{
+	var filetree = get_tree("filetree");
+	var parent_node = filetree.getNodeByParam("name", "Filelist", null);
+	tree_destroy_from_node(filetree, parent_node);
+	
+	parent_node.page_index++;
+	var start = parent_node.page_index * parent_node.page_size;
+	var end = start + parent_node.page_size - 1;
+	var list = g_filename_list;
+	var i;
+	for(i=start; i<end; i++)
+	{			
+		tree_append_to_node(filetree, parent_node, list[i]);
 	}
+	set_page_index(parent_node.page_index);
+}
+
+function load_page(page_index)
+{
+	var filetree = get_tree("filetree");
+	var parent_node = filetree.getNodeByParam("name", "Filelist", null);
+	tree_destroy_from_node(filetree, parent_node);
+	
+	parent_node.page_index = page_index;
+	var start = page_index * parent_node.page_size;
+	var end = start + parent_node.page_size - 1;
+	var list = g_filename_list;
+	var i;
+	for(i=start; i<end; i++)
+	{			
+		tree_append_to_node(filetree, parent_node, list[i]);
+	}
+	set_page_index(parent_node.page_index);
+}
+
+function big_array()
+{
+	for(var i =0; i<50; i++)
+	{
+		g_filename_list[i] = i;
+	}
+}
+
+function get_filelist(channel)
+{
+	var list = g_player.ComGetFileListVariant(g_PLAYER_INDEX);
+	var s = new Array();
+	s = list.split("\n");
+	for(var i=0; i<s.length-1; i++)
+	{
+		var filename = g_player.ComGetFileName(g_PLAYER_INDEX, i, 0);
+		if(filename.length != 0)
+			g_filename_list[i] = filename;
+	}
+	//return g_filename_list;
+	big_array();
+	load_page(0);
 }
 
 function load_filelist(channel)
 {
+	var list = get_filelist(channel);
+	
 	// load filelist
 	var filetree = get_tree("filetree");
 	var parent_node = filetree.getNodeByParam("name", "Filelist", null);
-	var list = get_filelist(channel);
+	
 	var i;
-	for(i=0; i<list.length; i++)
+	for(i=ary_index; i<list.length; i++)
 	{
+		if(i % parent_node.page_size == 0 && i != 0)
+		{
+			ary_index = i;
+ 			break;
+		}
+			
 		tree_append_to_node(filetree, parent_node, list[i]);
 	}
 }
 
 function init()
 {
-	player = document.getElementById('RemotePlayer');
-	player.width = 720;
-	player.height = 480;
+	g_filename_list = new Array();
+	g_player = document.getElementById('RemotePlayer');
+	g_player.width = 720;
+	g_player.height = 480;
 	var channel = get_channel();
 	if(channel >= MIN_CHANNEL && channel <= MAX_CHANNEL)
 	{
@@ -129,11 +208,12 @@ function init()
 		var port = parent.document.getElementById('port').innerHTML;
 		var user = parent.document.getElementById('user').innerHTML;
 		var passwd = parent.document.getElementById('passwd').innerHTML;
-		player.ComSetupConnect(PLAYER_INDEX, address, port, user, passwd, undefined, undefined, undefined, undefined, channel);
-		//player.ComOpenPlayer();
-		player.ComEmbedPlayer(0);
+		g_player.ComSetupConnect(g_PLAYER_INDEX, address, port, user, passwd, undefined, undefined, undefined, undefined, channel);
+		//g_player.ComOpenPlayer();
+		g_player.ComEmbedPlayer(0);
 		//fixme: need sleep a while to get file list
-		window.setTimeout("load_filelist("+channel+");", 1000);
+		//window.setTimeout("load_filelist("+channel+");", 1000);
+		window.setTimeout("get_filelist();", 1000);
 	}
 	else
 	{

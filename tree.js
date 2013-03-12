@@ -29,29 +29,3 @@ function tree_destroy_from_node(tree, node)
 {
 	tree.removeChildNodes(node);
 }
-
-function tree_update_node(event, treeId, treeNode)
-{
-	var tree = get_tree(treeId);
-	var cur_node = tree.getNodeByTId(treeNode.tId);
-	if(cur_node.isParent && cur_node.getParentNode())
-	{
-		if(cur_node.open)
-		{
-			var list = get_filelist(0);
-			var i;
-			for(i=0; i<list.length; i++)
-			{
-				tree_append_to_node(tree, cur_node, list[i]);
-			}
-		}
-		else
-		{
-			tree_destroy_from_node(tree, cur_node);
-		}
-	}
-	else
-	{
-		// leaf node no need to update
-	}
-}

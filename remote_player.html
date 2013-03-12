@@ -10,11 +10,6 @@
 		<script type="text/javascript">
 			var setting =
 			{
-				async:
-				{
-					enable: false,
-					url: " "
-				},
 				callback:
 				{
 					onClick: set_play_file
@@ -24,11 +19,12 @@
 			[
 				{
 					name:"Filelist",
+					id: "0",
+					page_index: 0,
+					page_size: 15,
+					content_len: 0,
 					open:true,
-					isParent:true,
-					children:
-					[
-					]
+					isParent:true
 				}
 			];
 			
@@ -43,46 +39,44 @@
 		<table width=100%>
 			<tr>
 				<td>
+					<button onclick="load_prev()"><-</button>
+					<button id='page_index'>0</button>
+					<button onclick="load_next()">-></button>
 					<div id="filetree" class='ztree'></div>
 				</td>
-			</tr>
-			<tr>
 				<td>
 					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT></div>
 				</td>
 			</tr>
+		</table>
+		<table>
 			<tr>
 				<td>
-					<table>
-					<tr>
-						<td>
-							<button onclick="playback()">PlayBackward</button>
-						</td>
-						<td>
-							<button onclick="play()">Play</button>
-						</td>
-						<td>
-							<button onclick="pause()">Pause</button>
-						</td>
-						<td>
-							<button onclick="seekback()">SeekBackward</button>
-						</td>
-						<td>
-							<button onclick="seekforward()">SeekForward</button>
-						</td>
-						<td>
-							<button onclick="prevframe()">PrevFrame</button>
-						</td>
-						<td>
-							<button onclick="nextframe()">NextFrame</button>
-						</td>
-						<td>
-							<button onclick="seekbegin()">SeekBegin</button>
-						</td>
-						<td>
-							<button onclick="seekend()">SeekEnd</button>
-						</td>
-					</tr>
+					<button onclick="playback()">PlayBackward</button>
+				</td>
+				<td>
+					<button onclick="play()">Play</button>
+				</td>
+				<td>
+					<button onclick="pause()">Pause</button>
+				</td>
+				<td>
+					<button onclick="seekback()">SeekBackward</button>
+				</td>
+				<td>
+					<button onclick="seekforward()">SeekForward</button>
+				</td>
+				<td>
+					<button onclick="prevframe()">PrevFrame</button>
+				</td>
+				<td>
+					<button onclick="nextframe()">NextFrame</button>
+				</td>
+				<td>
+					<button onclick="seekbegin()">SeekBegin</button>
+				</td>
+				<td>
+					<button onclick="seekend()">SeekEnd</button>
 				</td>
 			</tr>
 		</table>
