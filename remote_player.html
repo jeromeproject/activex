@@ -20,9 +20,9 @@
 				{
 					name:"Filelist",
 					id: "0",
-					page_index: 0,
+					page_index: -1,
 					page_size: 15,
-					content_len: 0,
+					child_num: 0,
 					open:true,
 					isParent:true
 				}
@@ -39,9 +39,11 @@
 		<table width=100%>
 			<tr>
 				<td>
-					<button onclick="load_prev()"><-</button>
+					<button onclick="page_load_first();"><--</button>
+					<button onclick="page_load_prev();"><-</button>
 					<button id='page_index'>0</button>
-					<button onclick="load_next()">-></button>
+					<button onclick="page_load_next();">-></button>
+					<button onclick="page_load_last();">--></button>
 					<div id="filetree" class='ztree'></div>
 				</td>
 				<td>

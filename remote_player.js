@@ -1,5 +1,7 @@
 var g_PLAYER_INDEX = 0;
 var g_player;
+var g_filetree;
+var g_parent_node;
 var g_filename_list;
 
 function pause()
@@ -89,75 +91,79 @@ function get_channel()
 	}
 }
 
-function set_page_index(page_index)
+function set_page_index(index)
 {
-	var btn = document.getElementById('page_index');
-	btn.value = page_index;
+	var pidx = document.getElementById('page_index');
+	// page start with 1
+	pidx.value = parseInt(index+1, 10);
 }
 
-function load_prev()
+function page_load_first()
 {
-	var filetree = get_tree("filetree");
-	var parent_node = filetree.getNodeByParam("name", "Filelist", null);
-	tree_destroy_from_node(filetree, parent_node);
+	page_load_index(0);
+}
+
+function page_load_prev()
+{
+	page_load_index(g_parent_node.page_index-1);
+}
+
+function page_load_next()
+{
+	page_load_index(g_parent_node.page_index+1);
+}
+
+function page_load_last()
+{
+	page_load_index( parseInt(g_parent_node.child_num/g_parent_node.page_size, 10) );
+}
+
+function page_load_index(index)
+{
+	// check index is in the range
+	if(index < 0 || index == parseInt(g_parent_node.child_num/g_parent_node.page_size+1, 10))
+	{
+		alert("No more page");
+		return;
+	}
 	
-	parent_node.page_index--;
-	var start = parent_node.page_index * parent_node.page_size;
-	var end = start + parent_node.page_size - 1;
-	var list = g_filename_list;
+	if(index == g_parent_node.page_index)
+	{
+		alert("Same page");
+		return;
+	}
+
+	// remove all childs
+	tree_destroy_from_node(g_filetree, g_parent_node);
+	
+	var start = index * g_parent_node.page_size;
+	var end = start + g_parent_node.page_size - 1;
+	
+	// childs num < page size
+	if(end > g_parent_node.child_num)
+		end = g_parent_node.child_num;
+	
 	var i;
 	for(i=start; i<end; i++)
-	{			
-		tree_append_to_node(filetree, parent_node, list[i]);
+	{
+		tree_append_to_node(g_filetree, g_parent_node, g_filename_list[i]);
 	}
-	set_page_index(parent_node.page_index);
-}
-
-function load_next()
-{
-	var filetree = get_tree("filetree");
-	var parent_node = filetree.getNodeByParam("name", "Filelist", null);
-	tree_destroy_from_node(filetree, parent_node);
 	
-	parent_node.page_index++;
-	var start = parent_node.page_index * parent_node.page_size;
-	var end = start + parent_node.page_size - 1;
-	var list = g_filename_list;
-	var i;
-	for(i=start; i<end; i++)
-	{			
-		tree_append_to_node(filetree, parent_node, list[i]);
-	}
-	set_page_index(parent_node.page_index);
+	// update and show new index
+	g_parent_node.page_index = index;
+	set_page_index(g_parent_node.page_index);
 }
 
-function load_page(page_index)
-{
-	var filetree = get_tree("filetree");
-	var parent_node = filetree.getNodeByParam("name", "Filelist", null);
-	tree_destroy_from_node(filetree, parent_node);
-	
-	parent_node.page_index = page_index;
-	var start = page_index * parent_node.page_size;
-	var end = start + parent_node.page_size - 1;
-	var list = g_filename_list;
-	var i;
-	for(i=start; i<end; i++)
-	{			
-		tree_append_to_node(filetree, parent_node, list[i]);
-	}
-	set_page_index(parent_node.page_index);
-}
-
+// for test
 function big_array()
 {
-	for(var i =0; i<50; i++)
+	for(var i =0; i<2000; i++)
 	{
 		g_filename_list[i] = i;
 	}
 }
 
-function get_filelist(channel)
+function get_filelist()
 {
 	var list = g_player.ComGetFileListVariant(g_PLAYER_INDEX);
 	var s = new Array();
@@ -168,34 +174,33 @@ function get_filelist(channel)
 		if(filename.length != 0)
 			g_filename_list[i] = filename;
 	}
-	//return g_filename_list;
+	
 	big_array();
-	load_page(0);
+	g_parent_node.child_num = g_filename_list.length;
+	page_load_index(0);
 }
 
 function load_filelist(channel)
 {
 	var list = get_filelist(channel);
-	
-	// load filelist
-	var filetree = get_tree("filetree");
-	var parent_node = filetree.getNodeByParam("name", "Filelist", null);
-	
+		
 	var i;
 	for(i=ary_index; i<list.length; i++)
 	{
-		if(i % parent_node.page_size == 0 && i != 0)
+		if(i % g_parent_node.page_size == 0 && i != 0)
 		{
 			ary_index = i;
  			break;
 		}
 			
-		tree_append_to_node(filetree, parent_node, list[i]);
+		tree_append_to_node(g_filetree, g_parent_node, list[i]);
 	}
 }
 
 function init()
 {
+	g_filetree = get_tree("filetree");
+	g_parent_node = g_filetree.getNodeByParam("name", "Filelist", null);
 	g_filename_list = new Array();
 	g_player = document.getElementById('RemotePlayer');
 	g_player.width = 720;
