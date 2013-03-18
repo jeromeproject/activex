@@ -21,7 +21,8 @@
 					name:"Filelist",
 					id: "0",
 					page_index: -1,
-					page_size: 15,
+					page_size: 3,
+					last_page: -1,
 					child_num: 0,
 					open:true,
 					isParent:true
@@ -39,15 +40,15 @@
 		<table width=100%>
 			<tr>
 				<td>
+					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT></div>
+				</td>
+				<td>
 					<button onclick="page_load_first();"><--</button>
 					<button onclick="page_load_prev();"><-</button>
 					<button id='page_index'>0</button>
 					<button onclick="page_load_next();">-></button>
 					<button onclick="page_load_last();">--></button>
 					<div id="filetree" class='ztree'></div>
-				</td>
-				<td>
-					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT></div>
 				</td>
 			</tr>
 		</table>

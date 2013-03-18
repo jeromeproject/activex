@@ -96,6 +96,8 @@ function set_page_index(index)
 	var pidx = document.getElementById('page_index');
 	// page start with 1
 	pidx.value = parseInt(index+1, 10);
+	var max_page = g_parent_node.last_page+1;
+	pidx.value += '/'+max_page;
 }
 
 function page_load_first()
@@ -115,21 +117,21 @@ function page_load_next()
 
 function page_load_last()
 {
-	page_load_index( parseInt(g_parent_node.child_num/g_parent_node.page_size, 10) );
+	page_load_index(g_parent_node.last_page);
 }
 
 function page_load_index(index)
 {
 	// check index is in the range
-	if(index < 0 || index == parseInt(g_parent_node.child_num/g_parent_node.page_size+1, 10))
-	{
-		alert("No more page");
-		return;
-	}
-	
 	if(index == g_parent_node.page_index)
 	{
 		alert("Same page");
+		return;
+	}
+
+	if(index < 0 || index > g_parent_node.last_page)
+	{
+		alert("No more page");
 		return;
 	}
 
@@ -140,11 +142,11 @@ function page_load_index(index)
 	var end = start + g_parent_node.page_size - 1;
 	
 	// childs num < page size
-	if(end > g_parent_node.child_num)
-		end = g_parent_node.child_num;
+	if(end == g_parent_node.child_num)
+		end = g_parent_node.child_num-1;
 	
 	var i;
-	for(i=start; i<end; i++)
+	for(i=start; i<=end; i++)
 	{
 		tree_append_to_node(g_filetree, g_parent_node, g_filename_list[i]);
 	}
@@ -165,6 +167,11 @@ function big_array()
 
 function get_filelist()
 {
+	var net_status = g_player.ComGetPlayerNetStatus(g_PLAYER_INDEX);
+	if(net_status != 3)
+		return;
+		
+	window.clearInterval(intervalID);
 	var list = g_player.ComGetFileListVariant(g_PLAYER_INDEX);
 	var s = new Array();
 	s = list.split("\n");
@@ -175,28 +182,12 @@ function get_filelist()
 			g_filename_list[i] = filename;
 	}
 	
-	big_array();
 	g_parent_node.child_num = g_filename_list.length;
+	g_parent_node.last_page = parseInt(g_parent_node.child_num/g_parent_node.page_size, 10);
 	page_load_index(0);
 }
 
-function load_filelist(channel)
-{
-	var list = get_filelist(channel);
-		
-	var i;
-	for(i=ary_index; i<list.length; i++)
-	{
-		if(i % g_parent_node.page_size == 0 && i != 0)
-		{
-			ary_index = i;
- 			break;
-		}
-			
-		tree_append_to_node(g_filetree, g_parent_node, list[i]);
-	}
-}
-
+var intervalID;
 function init()
 {
 	g_filetree = get_tree("filetree");
@@ -208,17 +199,18 @@ function init()
 	var channel = get_channel();
 	if(channel >= MIN_CHANNEL && channel <= MAX_CHANNEL)
 	{
-		// load activex
+		var today = new Date();
+		var year = today.getFullYear();
+		var month = today.getMonth()+1;
+		var day = today.getDate();
+		//g_player.ComSetupFilter(g_PLAYER_INDEX, year, month, day, 0, 0, 0, year, month, day, 23, 59, 59);
 		var address = parent.document.getElementById('address').innerHTML;
 		var port = parent.document.getElementById('port').innerHTML;
 		var user = parent.document.getElementById('user').innerHTML;
 		var passwd = parent.document.getElementById('passwd').innerHTML;
 		g_player.ComSetupConnect(g_PLAYER_INDEX, address, port, user, passwd, undefined, undefined, undefined, undefined, channel);
-		//g_player.ComOpenPlayer();
 		g_player.ComEmbedPlayer(0);
-		//fixme: need sleep a while to get file list
-		//window.setTimeout("load_filelist("+channel+");", 1000);
-		window.setTimeout("get_filelist();", 1000);
+		intervalID = window.setInterval("get_filelist()", 500);
 	}
 	else
 	{
