@@ -4,6 +4,7 @@ var g_filetree;
 var g_parent_node;
 var g_filename_list;
 
+// player functions
 function pause()
 {
 	set_player_action("RPP_Pause_PI");
@@ -80,17 +81,9 @@ function set_play_file(event, treeId, treeNode)
 		play();
 	}
 }
+// end player functions
 
-function get_channel()
-{
-	var str = document.location.search;
-	if(str.indexOf("?") >= 0)
-	{
-		var new_str = str.substring(str.indexOf("?")+1, str.length);
-		return new_str.split("=", -1)[1];
-	}
-}
-
+// page functions
 function set_page_index(index)
 {
 	var pidx = document.getElementById('page_index');
@@ -142,7 +135,7 @@ function page_load_index(index)
 	var end = start + g_parent_node.page_size - 1;
 	
 	// childs num < page size
-	if(end == g_parent_node.child_num)
+	if(end >= g_parent_node.child_num)
 		end = g_parent_node.child_num-1;
 	
 	var i;
@@ -155,11 +148,22 @@ function page_load_index(index)
 	g_parent_node.page_index = index;
 	set_page_index(g_parent_node.page_index);
 }
+// end page functions
+
+function get_channel()
+{
+	var str = document.location.search;
+	if(str.indexOf("?") >= 0)
+	{
+		var new_str = str.substring(str.indexOf("?")+1, str.length);
+		return new_str.split("=", -1)[1];
+	}
+}
 
 // for test
 function big_array()
 {
-	for(var i =0; i<2000; i++)
+	for(var i =0; i<100; i++)
 	{
 		g_filename_list[i] = i;
 	}
@@ -170,8 +174,15 @@ function get_filelist()
 	var net_status = g_player.ComGetPlayerNetStatus(g_PLAYER_INDEX);
 	if(net_status != 3)
 		return;
-		
+	
 	window.clearInterval(intervalID);
+	
+	// initial
+	g_parent_node.page_index = -1;
+	g_parent_node.last_page = -1;
+	g_parent_node.child_num = 0;
+	g_filename_list = [];
+	
 	var list = g_player.ComGetFileListVariant(g_PLAYER_INDEX);
 	var s = new Array();
 	s = list.split("\n");
@@ -182,9 +193,37 @@ function get_filelist()
 			g_filename_list[i] = filename;
 	}
 	
+	big_array();
 	g_parent_node.child_num = g_filename_list.length;
 	g_parent_node.last_page = parseInt(g_parent_node.child_num/g_parent_node.page_size, 10);
 	page_load_index(0);
+}
+
+function apply_fliter()
+{
+	// format: yyyy/mm/dd
+	var s = document.getElementById('start_date').value.split("/");
+	var e = document.getElementById('end_date').value.split("/");
+	set_fliter(s[0], s[1], s[2], e[0], e[1], e[2]);
+	tree_destroy_from_node(g_filetree, g_parent_node);
+	get_filelist();
+}
+
+function set_fliter(s_year, s_month, s_day, e_year, e_month, e_day)
+{
+	g_player.ComSetupFilter(g_PLAYER_INDEX, s_year, s_month, s_day, 0, 0, 0, e_year, e_month, e_day, 23, 59, 59);
+}
+
+function set_fliter_today()
+{
+	var today = new Date();
+	var year = today.getFullYear();
+	var month = today.getMonth()+1;
+	var day = today.getDate();
+	set_fliter(year, month, day, year, month, day);
+	
+	document.getElementById('start_date').value = year+"/"+month+"/"+day;
+	document.getElementById('end_date').value = year+"/"+month+"/"+day;
 }
 
 var intervalID;
@@ -192,18 +231,13 @@ function init()
 {
 	g_filetree = get_tree("filetree");
 	g_parent_node = g_filetree.getNodeByParam("name", "Filelist", null);
-	g_filename_list = new Array();
 	g_player = document.getElementById('RemotePlayer');
 	g_player.width = 720;
 	g_player.height = 480;
 	var channel = get_channel();
 	if(channel >= MIN_CHANNEL && channel <= MAX_CHANNEL)
 	{
-		var today = new Date();
-		var year = today.getFullYear();
-		var month = today.getMonth()+1;
-		var day = today.getDate();
-		//g_player.ComSetupFilter(g_PLAYER_INDEX, year, month, day, 0, 0, 0, year, month, day, 23, 59, 59);
+		set_fliter_today();
 		var address = parent.document.getElementById('address').innerHTML;
 		var port = parent.document.getElementById('port').innerHTML;
 		var user = parent.document.getElementById('user').innerHTML;

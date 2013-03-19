@@ -45,12 +45,26 @@
 					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80"></OBJECT></div>
 				</td>
 				<td>
-					<button onclick="page_load_first();"><--</button>
-					<button onclick="page_load_prev();"><-</button>
-					<button id='page_index'>0</button>
-					<button onclick="page_load_next();">-></button>
-					<button onclick="page_load_last();">--></button>
-					<div id="filetree" class='ztree'></div>
+					<table>
+						<tr>
+							<td>
+								<div>Fliter</div>
+								<div>Start<input type="text" name="start_date" class="tcal" value="" /></div>
+								<div>End<input type="text" name="end_date" class="tcal" value="" /></div>
+								<div><button onclick="apply_fliter()">apply</button></div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<button onclick="page_load_first();"><--</button>
+								<button onclick="page_load_prev();"><-</button>
+								<button id='page_index'>0</button>
+								<button onclick="page_load_next();">-></button>
+								<button onclick="page_load_last();">--></button>
+								<div id="filetree" class='ztree'></div>
+							</td>
+						</tr>
+					</table>
 				</td>
 			</tr>
 		</table>
