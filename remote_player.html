@@ -38,11 +38,11 @@
 			});
 		</script>
 	</HEAD>
-	<BODY onload="window.setTimeout('init();', 50)");>
+	<BODY onload="init()" onunload="destroy()">
 		<table width=100%>
 			<tr>
 				<td>
-					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80" codebase="ocx/RemotePlayer.ocx"></OBJECT></div>
+					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80" codebase="ocx/RemotePlayer.ocx" width=720 height=480></OBJECT></div>
 				</td>
 				<td>
 					<table>

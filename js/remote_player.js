@@ -232,8 +232,14 @@ function init()
 	g_filetree = get_tree("filetree");
 	g_parent_node = g_filetree.getNodeByParam("name", "Filelist", null);
 	g_player = document.getElementById('RemotePlayer');
-	g_player.width = 720;
-	g_player.height = 480;
+	try
+	{
+		g_player.ComGetPlayerNetStatus(g_PLAYER_INDEX);
+	}
+	catch(e)
+	{
+		init_active_fail();
+	}
 	var channel = get_channel();
 	if(channel >= MIN_CHANNEL && channel <= MAX_CHANNEL)
 	{
@@ -249,5 +255,17 @@ function init()
 	else
 	{
 		alert("channel out of range " + channel);
+	}
+}
+
+function destroy()
+{
+	try
+	{
+		g_player.ComClosePlayer();
+	}
+	catch(e)
+	{
+		init_active_fail();
 	}
 }

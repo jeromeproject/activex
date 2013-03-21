@@ -29,10 +29,16 @@ function get_param(ip, port, username, password, channel)
 }
 
 function init()
-{	
+{
 	var viewer = document.getElementById('RemoteViewer');
-	viewer.width = 720;
-	viewer.height = 480;
+	try
+	{
+		viewer.ComGetSourceTextSetting();
+	}
+	catch(e)
+	{
+		init_active_fail();
+	}
 	var channel = get_channel();
 	if(channel >= MIN_CHANNEL && channel <= MAX_CHANNEL)
 	{
@@ -51,5 +57,18 @@ function init()
 	else
 	{
 		alert("wrong channel" + channel);
+	}
+}
+
+function destroy()
+{
+	var viewer = document.getElementById('RemoteViewer');
+	try
+	{
+		viewer.ComStopNetwork();
+	}
+	catch(e)
+	{
+		init_active_fail();
 	}
 }
