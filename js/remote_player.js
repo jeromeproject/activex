@@ -199,6 +199,28 @@ function get_filelist()
 	page_load_index(0);
 }
 
+function check_fliter_rule(id)
+{
+	var s_obj = document.getElementById('start_date');
+	var s = s_obj.value.split("/");
+	var s_t = s[0]*10000+s[1]*100+s[2];
+
+	var e_obj = document.getElementById('end_date');
+	var e = e_obj.value.split("/");
+	var e_t = e[0]*10000+e[1]*100+e[2];
+
+	if(id == s_obj.name)
+	{
+		if(s_t > e_t)
+			e_obj.value = s_obj.value;
+	}
+	else if(id == e_obj.name)
+	{
+		if(e_t < s_t)
+			s_obj.value = e_obj.value;
+	}
+}
+
 function apply_fliter()
 {
 	// format: yyyy/mm/dd

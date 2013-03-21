@@ -154,6 +154,7 @@ function f_tcalUpdate (n_date, b_keepOpen) {
 	else {
 		e_input.value = f_tcalGenerateDate(d_date, A_TCALCONF.format);
 		f_tcalCancel();
+		check_fliter_rule(e_input.name);
 	}
 }
 
