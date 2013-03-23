@@ -27,5 +27,6 @@ function tree_append_to_node(tree, parent_node, child_name)
 
 function tree_destroy_from_node(tree, node)
 {
+	child_id = 0;
 	tree.removeChildNodes(node);
 }

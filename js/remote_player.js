@@ -66,7 +66,6 @@ function set_player_action(action)
 	// end mapping
 	
 	var speed = parseFloat(document.getElementById('speed').value);
-	alert(speed);
 	g_player.ComPlayback(g_PLAYER_INDEX, acts[action], speed, 0);
 }
 
@@ -192,10 +191,13 @@ function get_filelist()
 	{
 		var filename = g_player.ComGetFileName(g_PLAYER_INDEX, i, 0);
 		if(filename.length != 0)
-			g_filename_list[i] = filename;
+		{
+			var tmp = filename.split('\\');
+			g_filename_list[i] = tmp[tmp.length-1];
+		}
 	}
 	
-	big_array();
+	//big_array();
 	g_parent_node.child_num = g_filename_list.length;
 	g_parent_node.last_page = parseInt(g_parent_node.child_num/g_parent_node.page_size, 10);
 	page_load_index(0);
@@ -230,6 +232,7 @@ function apply_filter()
 	var e = document.getElementById('end_date').value.split("/");
 	set_filter(s[0], s[1], s[2], e[0], e[1], e[2]);
 	tree_destroy_from_node(g_filetree, g_parent_node);
+	g_player.ComReconnectAllPlayer(g_PLAYER_INDEX);
 	get_filelist();
 }
 
