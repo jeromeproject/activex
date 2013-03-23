@@ -33,26 +33,7 @@
 		[
 			{ 
 				name:"LiveView", 
-				open:true,
-				children: 
-				[
-					{
-						name: "Channel1",
-						click:"set_liveview('0')"
-					},
-					{
-						name: "Channel2",
-						click:"set_liveview('1')"
-					},
-					{
-						name: "Channel3",
-						click:"set_liveview('2')"
-					},
-					{
-						name: "Channel4",
-						click:"set_liveview('3')"
-					}
-				]
+				click:"set_liveview('0', '0')"
 			},
 			{ 
 				name:"Playback",
@@ -93,8 +74,8 @@
 	<table border=1 width=100% height=800px>
 		<tr>
 			<td width=20%>
-				<div id='address'>10.144.10.10</div>
-				<div id='port'>17862</div>
+				<div id='address'>172.16.1.122</div>
+				<div id='port'>17860</div>
 				<div id='user'>test</div>
 				<div id='passwd'>test</div>
 				<div id='maintree' class="ztree"></div>

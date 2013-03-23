@@ -8,18 +8,26 @@
 	<table>
 		<tr>
 			<td>
-				<OBJECT ID="RemoteViewer1" CLASSID="CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3" codebase="ocx/RemoteViewer.ocx" width=540 height=360></OBJECT>
-			</td>
-			<td>
-				<OBJECT ID="RemoteViewer2" CLASSID="CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3" codebase="ocx/RemoteViewer.ocx" width=540 height=360></OBJECT>
+				<div>server status: xx, channel status: xx</div>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<OBJECT ID="RemoteViewer3" CLASSID="CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3" codebase="ocx/RemoteViewer.ocx" width=540 height=360></OBJECT>
+					<div id='viewarea'>
+					</div>
 			</td>
+		</tr>
+		<tr>
 			<td>
-				<OBJECT ID="RemoteViewer4" CLASSID="CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3" codebase="ocx/RemoteViewer.ocx" width=540 height=360></OBJECT>
+				<button class="button" id='1' onclick="init_seperate4();">for4</button>
+				<button class="button" id='0' onclick="init_single();">one</button>
+				<button class="button" id='2'>multi</button>
+				<select id='channel' onchange="change_channel(this);">
+					<option value=0>Channel 1</option>
+					<option value=1>Channel 2</option>
+					<option value=2>Channel 3</option>
+					<option value=3>Channel 4</option>
+				</select>
 			</td>
 		</tr>
 	</table>

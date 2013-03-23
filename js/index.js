@@ -4,9 +4,9 @@ function update_content(src)
 	iframe.src = src;
 }
 
-function set_liveview(channel)
+function set_liveview(type, channel)
 {
-	src = "remote_viewer.html?channel="+channel;
+	src = "remote_viewer.html?type="+type+"&channel="+channel;
 	update_content(src);
 }
 
