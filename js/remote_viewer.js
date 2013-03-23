@@ -69,6 +69,6 @@ function destroy()
 	}
 	catch(e)
 	{
-		init_active_fail();
+		//init_active_fail();
 	}
 }

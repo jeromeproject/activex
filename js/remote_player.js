@@ -65,7 +65,9 @@ function set_player_action(action)
 	acts['RPP_SeekEnd_PI'] = 20;
 	// end mapping
 	
-	g_player.ComPlayback(g_PLAYER_INDEX, acts[action], 0, 0);
+	var speed = parseFloat(document.getElementById('speed').value);
+	alert(speed);
+	g_player.ComPlayback(g_PLAYER_INDEX, acts[action], speed, 0);
 }
 
 function set_play_file(event, treeId, treeNode)
@@ -288,6 +290,6 @@ function destroy()
 	}
 	catch(e)
 	{
-		init_active_fail();
+		//init_active_fail();
 	}
 }

@@ -3,6 +3,7 @@
 		<TITLE>Remote player</TITLE>
 		<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
 		<link rel="stylesheet" href="css/tcal/tcal.css" type="text/css">
+		<link rel="stylesheet" href="css/web/web.css" type="text/css">
 		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
 		<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
 		<script type="text/javascript" src="js/library.js"></script>
@@ -70,33 +71,43 @@
 		</table>
 		<table>
 			<tr>
+				<!--<td>-->
+					<!--<button onclick="playback()">PlayBackward</button>-->
+				<!--</td>-->
 				<td>
-					<button onclick="playback()">PlayBackward</button>
+					<button class="button" onclick="play()">Play</button>
 				</td>
 				<td>
-					<button onclick="play()">Play</button>
+					<button class="button" onclick="pause()">Pause</button>
 				</td>
 				<td>
-					<button onclick="pause()">Pause</button>
+					<button class="button" onclick="prevframe()">PrevFrame</button>
 				</td>
 				<td>
-					<button onclick="seekback()">SeekBackward</button>
+					<button class="button" onclick="nextframe()">NextFrame</button>
 				</td>
 				<td>
-					<button onclick="seekforward()">SeekForward</button>
+					<button class="button" onclick="seekbegin()">SeekBegin</button>
 				</td>
 				<td>
-					<button onclick="prevframe()">PrevFrame</button>
+					<button class="button" onclick="seekend()">SeekEnd</button>
+				</td>		
+				<td>
+					<button class="button" onclick="seekback()">SeekBackward</button>
+				</td>
+				<td id='speed'>
+					<select>
+						<option value='1/4'>x1/4</option>
+						<option value='4'>x4</option>
+						<option value='10'>x10</option>
+						<option value='30'>x30</option>
+						<option value='90'>x90</option>
+					</select>
 				</td>
 				<td>
-					<button onclick="nextframe()">NextFrame</button>
+					<button class="button" onclick="seekforward()">SeekForward</button>
 				</td>
-				<td>
-					<button onclick="seekbegin()">SeekBegin</button>
-				</td>
-				<td>
-					<button onclick="seekend()">SeekEnd</button>
-				</td>
+
 			</tr>
 		</table>
 	</BODY>
