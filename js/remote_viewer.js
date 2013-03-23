@@ -102,6 +102,7 @@ function change_channel(e)
 
 function init_seperate4()
 {
+	destroy();
 	var address = parent.document.getElementById('address').innerHTML;
 	var port = parent.document.getElementById('port').innerHTML;
 	var user = parent.document.getElementById('user').innerHTML;
@@ -124,6 +125,7 @@ function init_seperate4()
 
 function init_single(channel)
 {
+	destroy();
 	var address = parent.document.getElementById('address').innerHTML;
 	var port = parent.document.getElementById('port').innerHTML;
 	var user = parent.document.getElementById('user').innerHTML;
