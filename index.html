@@ -74,15 +74,23 @@
 	<OBJECT ID='viewer' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>
 	<table border=1 width=100% height=850px>
 		<tr>
-			<td width=10%>
-				<div id='server_st'>0</div>
-				<div id='address'>10.144.10.10</div>
-				<div id='port'>17860</div>
-				<div id='user'>test</div>
-				<div id='passwd'>test</div>
+			<td width=15%>
+				<div>
+					Status:<span id='server_st'>0</span>
+				</div>
+				<div>
+					Address:<span id='address'>10.144.10.10</span>
+				</div>
+				<div>
+					Port:<span id='port'>17860</span>
+				</div>
+				<div>
+					Username:<span id='user'>test</span>
+				</div>
+				<div style='display:none' id='passwd'>test</div>
 				<div id='maintree' class="ztree"></div>
 			</td>
-			<td width=90%>
+			<td width=85%>
 				<iframe 
 					id          ="content" 
 					frameborder ="0" 
