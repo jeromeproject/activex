@@ -16,6 +16,20 @@ function set_playback(channel)
 	update_content(src);
 }
 
+function get_server_info()
+{
+	var address = document.getElementById('address').innerHTML;
+	var port = document.getElementById('port').innerHTML;
+	var user = document.getElementById('user').innerHTML;
+	var passwd = document.getElementById('passwd').innerHTML;
+	var ret = viewer.SaGetRemoteStationInfo(address+":"+port, user, passwd);
+	if(ret.length > 0)
+		document.getElementById('server_st').innerHTML = "1";
+	else
+		document.getElementById('server_st').innerHTML = "0";
+}
+
 function init()
 {
+	window.setInterval("get_server_info()", 5000);
 }
