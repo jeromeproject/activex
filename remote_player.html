@@ -16,6 +16,11 @@
 				callback:
 				{
 					onClick: set_play_file
+				},
+				data: {
+					keep: {
+						parent: true
+					}
 				}
 			};
 			var nodes =
@@ -40,7 +45,7 @@
 		</script>
 	</HEAD>
 	<BODY onload="init()" onunload="destroy()">
-		<table width=100%>
+		<table width=800px>
 			<tr>
 				<td>
 					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80" codebase="ocx/RemotePlayer.ocx" width=720 height=480></OBJECT></div>

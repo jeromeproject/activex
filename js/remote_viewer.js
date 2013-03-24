@@ -1,6 +1,7 @@
-var g_type;  // 0: seperate to 4 windows, 1: single window, 2: parent and children
+var g_type;  // 0: seperate to 4 windows, 1: single window, 2: parent-child
 var g_max_channel_num = [4, 4, 4];
 
+// get input parameters from url after '?'
 function get_input_params()
 {
 	var ret = new Array();
@@ -23,7 +24,8 @@ function get_input_params()
 	}
 }
 
-function get_param(ip, port, username, password, channel)
+
+function gen_connection_str(ip, port, username, password, channel)
 {
 	var param = "";
 	//param += "View0_is_local=0\n"
@@ -43,7 +45,32 @@ function get_param(ip, port, username, password, channel)
 	return param;
 }
 
-function gen_seperate4()
+function change_channel(e)
+{
+	if(g_type == '0')
+		return;
+	else
+	{
+		var idx = parseInt(e.value, 10);
+		switch(g_type)
+		{
+			case '1':
+				init_single(idx);
+				break;
+			case '2':
+				init_parent_child(idx);
+				break;
+		}
+	}	
+}
+
+function load_ui(html)
+{
+	var viewarea = document.getElementById('viewarea');
+	viewarea.innerHTML = html;
+}
+
+function gen_seperate4_html()
 {	
 	var html = 
 		"<table>\
@@ -68,7 +95,14 @@ function gen_seperate4()
 	return html;
 }
 
-function gen_single(channel)
+function init_seperate4()
+{
+	g_type = '0';
+	load_ui(gen_seperate4_html());
+	init_viewer(g_max_channel_num[g_type]);
+}
+
+function gen_single_html(channel)
 {
 	var html = "<OBJECT ID='RemoteViewer0' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>";
 	html += "<OBJECT ID='RemoteViewer1' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>";
@@ -77,52 +111,71 @@ function gen_single(channel)
 	return html;
 }
 
-function load_ui(html)
-{
-	var viewarea = document.getElementById('viewarea');
-	viewarea.innerHTML = html;
-}
-
-function change_channel(e)
-{
-	if(g_type == '0')
-		return;
-	else
-	{
-		RemoteViewer0.ComStopNetwork();
-		switch(g_type)
-		{
-			case '1':
-				var idx = parseInt(e.value, 10);
-				init_single(idx);
-				break;
-			case '2':
-				break;
-		}
-	}	
-}
-
-function init_seperate4()
-{
-	g_type = '0';
-	load_ui(gen_seperate4());
-	init_viewer(g_max_channel_num[g_type]);
-}
-
 function init_single(channel)
 {
 	g_type = '1';
 	if(typeof channel == "undefined")
 		channel = parseInt(document.getElementById('channel').value, 10);
 
-	load_ui(gen_single(channel));
+	load_ui(gen_single_html(channel));
 	init_viewer(g_max_channel_num[g_type], channel);
 }
 
+function gen_parent_child_html()
+{
+	var html = "<table>";
+			html += "<tr>";
+				html += "<td>";
+					html += "<OBJECT ID='RemoteViewer0' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=720 height=480></OBJECT>";
+				html += "</td>";
+				html += "<td>";
+					html += "<table>";
+						html += "<tr>";
+							html += "<OBJECT ID='RemoteViewer1' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=240 height=160></OBJECT>";
+						html += "</tr>";
+						html += "<tr>";
+							html += "<OBJECT ID='RemoteViewer2' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=240 height=160></OBJECT>";
+						html += "</tr>";
+						html += "<tr>";
+							html += "<OBJECT ID='RemoteViewer3' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=240 height=160></OBJECT>";
+						html += "</tr>";
+					html += "</table>";
+				html += "</td>";
+			html += "</tr>";
+	html += "</table>";
+	return html;
+}
+
+function init_parent_child(major_channel)
+{
+	g_type = '2';
+	if(typeof major_channel == "undefined")
+		major_channel = parseInt(document.getElementById('channel').value, 10);
+		
+	load_ui(gen_parent_child_html());
+	init_viewer(g_max_channel_num[g_type], major_channel);
+}
 
 function init_viewer(max_channel, open_channel)
 {
 	destroy();
+	var channel_map = [0, 1, 2, 3];
+	if(g_type == '2')
+	{
+		channel_map[0] = open_channel;
+		var count = 0;
+		var i = 1;
+		while(i < g_max_channel_num[g_type])
+		{
+			if(count != open_channel)
+			{
+				channel_map[i] = count;
+				i++;
+			}
+			count++;
+		}
+	}
+	
 	var address = parent.document.getElementById('address').innerHTML;
 	var port = parent.document.getElementById('port').innerHTML;
 	var user = parent.document.getElementById('user').innerHTML;
@@ -131,11 +184,11 @@ function init_viewer(max_channel, open_channel)
 	var i;
 	for(i=0; i<max_channel; i++)
 	{
-		var param = get_param(address, port, user, passwd, i);
+		var param = gen_connection_str(address, port, user, passwd, channel_map[i]);		
 		var id = "RemoteViewer"+i;
 		var viewer = document.getElementById(id);
 		
-		if(i == open_channel)
+		if(i == open_channel && g_type == '1')
 		{
 			// only single mode enter here.
 			// change viewer size and hide others
@@ -151,7 +204,7 @@ function init_viewer(max_channel, open_channel)
 	}
 }
 
-function get_info()
+function get_connection_info()
 {
 	document.getElementById('channel_st').innerHTML = "";
 	document.getElementById('framerate_st').innerHTML = "";
@@ -166,7 +219,7 @@ function get_info()
 		fps = viewer.ComViewGeneralCommand(23, 0, 0, 0);
 		
 		document.getElementById('channel_st').innerHTML += status+" ";
-		document.getElementById('framerate_st').innerHTML += fps+" ";
+		document.getElementById('framerate_st').innerHTML += fps/1000+" ";
 	}
 }
 
@@ -184,11 +237,10 @@ function init()
 			init_single(channel);
 			break;
 		case '2':
-			// not ready
-			//init_parent_and_children();
+			init_parent_child(channel);
 			break;
 	}
-	window.setInterval("get_info()", 1000);
+	window.setInterval("get_connection_info()", 1000);
 }
 
 function destroy()
