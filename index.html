@@ -11,10 +11,11 @@
 		{
 			callback: 
 			{
-				beforeExpand:tree_disable_expand,
-				beforeCollapse:tree_disable_collapse
+				//beforeExpand:tree_disable_expand,
+				//beforeCollapse:tree_disable_collapse
 				//onCollapse: tree_update_node,
 				//onExpand: tree_update_node
+				onClick: show_node_information
 			},			
 			data:
 			{
@@ -25,43 +26,12 @@
 			},
 			view:
 			{
-				showIcon:false
+				showIcon:true
 			}
 		};
 
 		var zNodes =
 		[
-			{ 
-				name:"LiveView", 
-				click:"set_liveview('0', '0')"
-			},
-			{ 
-				name:"Playback",
-				open:true,
-				children: 
-				[
-					{ 
-						name: "Channel1",
-						click:"set_playback('0')"
-					},
-					{ 
-						name: "Channel2",
-						click:"set_playback('1')"
-					},
-					{ 
-						name: "Channel3",
-						click:"set_playback('2')"
-					},
-					{ 
-						name: "Channel4",
-						click:"set_playback('3')"
-					}
-				]
-			},
-			{
-				name:"Setting",
-				click:"update_content('setting.html')"
-			},
 		];
 
 		$(document).ready(function(){
@@ -75,11 +45,12 @@
 	<table border=1 width=100% height=850px>
 		<tr>
 			<td width=10%>
-				<div id='server_st'>0</div>
-				<div id='address'>10.144.10.10</div>
-				<div id='port'>17860</div>
-				<div id='user'>test</div>
-				<div id='passwd'>test</div>
+				Address<input id=new_address type=text></input><br>
+				Port<input id=new_port type=text></input><br>
+				User<input id=new_user type=text></input><br>
+				Passwd<input id=new_passwd type=password></input><br>
+				<button id=add onclick='add_server()'>add</button>
+				<button id=cancel style='display:none' onclick='cancel()'>cancel</button>
 				<div id='maintree' class="ztree"></div>
 			</td>
 			<td width=90%>
@@ -88,7 +59,7 @@
 					frameborder ="0" 
 					scrolling   ="no" 
 					style       ="width:100%;height:100%;"
-					src			="setting.html"
+					src			=""
 				>
 				</iframe>
 			</td>

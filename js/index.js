@@ -31,5 +31,85 @@ function get_server_info()
 
 function init()
 {
-	window.setInterval("get_server_info()", 5000);
+	//window.setInterval("get_server_info()", 5000);
+}
+
+function cancel()
+{	
+	document.getElementById('new_address').value = "";
+	document.getElementById('new_port').value = "";
+	document.getElementById('new_user').value = "";
+	document.getElementById('new_passwd').value = "";
+	document.getElementById('add').innerHTML = "Add";
+	document.getElementById('add').onClick = "add_server();";
+	document.getElementById('cancel').style.display = "none";
+}
+
+function add_server()
+{
+	var new_address = document.getElementById('new_address').value;
+	var new_port = document.getElementById('new_port').value;
+	var new_user = document.getElementById('new_user').value;
+	var new_passwd = document.getElementById('new_passwd').value;
+	if(new_address.length == 0 || new_port.length == 0 || new_user.length == 0 || new_passwd.length == 0)
+	{
+		alert("invalid parameter");
+		return;
+	}
+
+	var tree = get_tree('maintree');
+	var node = tree.getNodesByParam('name', new_address)[0];
+	if(node)
+	{
+		alert("This address is already exists.");
+		return;
+	}
+
+	var new_server =
+	[
+		{
+			is_top:true,
+			address:new_address,
+			port:new_port,
+			username:new_user,
+			passwd:new_passwd,
+			name:new_address,
+			children:
+			[
+				{ 
+					name:"LiveView", 
+					click:"set_liveview('0', '0')"
+				},
+				{ 
+					name:"Playback",
+					open:true,
+					children: 
+					[
+						{ 
+							name: "Channel1",
+							click:"set_playback('0')"
+						},
+						{ 
+							name: "Channel2",
+							click:"set_playback('1')"
+						},
+						{ 
+							name: "Channel3",
+							click:"set_playback('2')"
+						},
+						{ 
+							name: "Channel4",
+							click:"set_playback('3')"
+						}
+					]
+				},
+			]
+		}
+	];
+	tree.addNodes(undefined, new_server, 0);
+
+	document.getElementById('new_address').value = "";
+	document.getElementById('new_port').value = "";
+	document.getElementById('new_user').value = "";
+	document.getElementById('new_passwd').value = "";
 }

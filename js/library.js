@@ -5,3 +5,4 @@ function init_active_fail()
 {
 	alert("Please install activex first.");
 }
+
