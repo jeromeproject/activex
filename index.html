@@ -49,8 +49,20 @@
 				Port<input id=new_port type=text></input><br>
 				User<input id=new_user type=text></input><br>
 				Passwd<input id=new_passwd type=password></input><br>
-				<button id=add onclick='add_server()'>add</button>
-				<button id=cancel style='display:none' onclick='cancel()'>cancel</button>
+				<table>
+					<tr>
+						<td>
+							<button id=add style='display:inline' onclick='add_server()'>add</button>
+							<button id=update style='display:none' onclick='update_server()'>update</button>
+						</td>
+						<td>
+							<button id=delete style='display:none' onclick='delete_server()'>del</button>
+						</td>
+						<td>
+							<button id=cancel style='display:none' onclick='cancel()'>cancel</button>
+						</td>
+					</tr>
+				</table>
 				<div id='maintree' class="ztree"></div>
 			</td>
 			<td width=90%>
