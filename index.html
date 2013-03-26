@@ -11,10 +11,11 @@
 		{
 			callback: 
 			{
-				beforeExpand:tree_disable_expand,
-				beforeCollapse:tree_disable_collapse
+				//beforeExpand:tree_disable_expand,
+				//beforeCollapse:tree_disable_collapse
 				//onCollapse: tree_update_node,
 				//onExpand: tree_update_node
+				onClick: show_node_information
 			},			
 			data:
 			{
@@ -25,43 +26,12 @@
 			},
 			view:
 			{
-				showIcon:false
+				showIcon:true
 			}
 		};
 
 		var zNodes =
 		[
-			{ 
-				name:"LiveView", 
-				click:"set_liveview('0', '0')"
-			},
-			{ 
-				name:"Playback",
-				open:true,
-				children: 
-				[
-					{ 
-						name: "Channel1",
-						click:"set_playback('0')"
-					},
-					{ 
-						name: "Channel2",
-						click:"set_playback('1')"
-					},
-					{ 
-						name: "Channel3",
-						click:"set_playback('2')"
-					},
-					{ 
-						name: "Channel4",
-						click:"set_playback('3')"
-					}
-				]
-			},
-			{
-				name:"Setting",
-				click:"update_content('setting.html')"
-			},
 		];
 
 		$(document).ready(function(){
@@ -74,20 +44,25 @@
 	<OBJECT ID='viewer' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>
 	<table border=1 width=100% height=850px>
 		<tr>
-			<td width=15%>
-				<div>
-					Status:<span id='server_st'>0</span>
-				</div>
-				<div>
-					Address:<span id='address'>10.144.10.10</span>
-				</div>
-				<div>
-					Port:<span id='port'>17860</span>
-				</div>
-				<div>
-					Username:<span id='user'>test</span>
-				</div>
-				<div style='display:none' id='passwd'>test</div>
+			<td width=10%>
+				Address<input id=new_address type=text></input><br>
+				Port<input id=new_port type=text></input><br>
+				User<input id=new_user type=text></input><br>
+				Passwd<input id=new_passwd type=password></input><br>
+				<table>
+					<tr>
+						<td>
+							<button id=add style='display:inline' onclick='add_server()'>add</button>
+							<button id=update style='display:none' onclick='update_server()'>update</button>
+						</td>
+						<td>
+							<button id=delete style='display:none' onclick='delete_server()'>del</button>
+						</td>
+						<td>
+							<button id=cancel style='display:none' onclick='cancel()'>cancel</button>
+						</td>
+					</tr>
+				</table>
 				<div id='maintree' class="ztree"></div>
 			</td>
 			<td width=85%>
@@ -96,7 +71,7 @@
 					frameborder ="0" 
 					scrolling   ="no" 
 					style       ="width:100%;height:100%;"
-					src			="setting.html"
+					src	=""
 				>
 				</iframe>
 			</td>

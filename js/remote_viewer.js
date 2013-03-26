@@ -175,12 +175,14 @@ function init_viewer(max_channel, open_channel)
 			count++;
 		}
 	}
+
+	var tree = get_tree_from_parent("maintree");
+	var info = get_server_info_with_select(tree);
+	var address = info[0];
+	var port = info[1];
+	var user = info[2];
+	var passwd = info[3];
 	
-	var address = parent.document.getElementById('address').innerHTML;
-	var port = parent.document.getElementById('port').innerHTML;
-	var user = parent.document.getElementById('user').innerHTML;
-	var passwd = parent.document.getElementById('passwd').innerHTML;
-		
 	var i;
 	for(i=0; i<max_channel; i++)
 	{
@@ -240,7 +242,7 @@ function init()
 			init_parent_child(channel);
 			break;
 	}
-	window.setInterval("get_connection_info()", 1000);
+	window.setInterval("get_connection_info()", 2000);
 }
 
 function destroy()

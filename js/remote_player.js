@@ -268,11 +268,13 @@ function init()
 	var channel = get_channel();
 	if(channel >= MIN_CHANNEL && channel <= MAX_CHANNEL)
 	{
-		set_filter_today();
-		var address = parent.document.getElementById('address').innerHTML;
-		var port = parent.document.getElementById('port').innerHTML;
-		var user = parent.document.getElementById('user').innerHTML;
-		var passwd = parent.document.getElementById('passwd').innerHTML;
+		set_filter_today();	
+		var tree = get_tree_from_parent("maintree");
+		var info = get_server_info_with_select(tree);
+		var address = info[0];
+		var port = info[1];
+		var user = info[2];
+		var passwd = info[3];
 		RemotePlayer.ComSetupConnect(g_PLAYER_INDEX, address, port, user, passwd, undefined, undefined, undefined, undefined, channel);
 		RemotePlayer.ComEmbedPlayer(0);
 		intervalID = window.setInterval("get_filelist()", 500);
