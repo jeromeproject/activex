@@ -4,12 +4,14 @@
 		<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
 		<link rel="stylesheet" href="css/tcal/tcal.css" type="text/css">
 		<link rel="stylesheet" href="css/web/web.css" type="text/css">
+		<link rel="stylesheet" href="css/msdropdown/dd.css" type="text/css">
 		<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
 		<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
+		<script type="text/javascript" src="js/tcal.js"></script>
+		<script type="text/javascript" src="js/msdropdown/jquery.dd.min.js"></script>
 		<script type="text/javascript" src="js/library.js"></script>
 		<script type="text/javascript" src="js/tree.js"></script>
 		<script type="text/javascript" src="js/remote_player.js"></script>
-		<script type="text/javascript" src="js/tcal.js"></script>
 		<script type="text/javascript">
 			var setting =
 			{
@@ -40,12 +42,12 @@
 			$(document).ready(function()
 			{
 				zTreeObj = $.fn.zTree.init($("#filetree"), setting, nodes);
-
+				$("#speed").msDropdown();
 			});
 		</script>
 	</HEAD>
 	<BODY onload="setTimeout(init(), 500)" onunload="destroy()">
-		<table width=800px>
+		<table width=1000px>
 			<tr>
 				<td>
 					<div id="player"><OBJECT ID="RemotePlayer" CLASSID="CLSID:707516D0-EC79-459D-BF12-3DF25F4AEA80" codebase="ocx/RemotePlayer.ocx" width=720 height=480></OBJECT></div>
@@ -57,16 +59,16 @@
 								<div>Fliter</div>
 								<div>Start<input type="text" name="start_date" class="tcal" value="" /></div>
 								<div>End<input type="text" name="end_date" class="tcal" value="" /></div>
-								<div><button onclick="apply_filter()">apply</button></div>
 							</td>
 						</tr>
-						<tr>
+				<tr>
 							<td>
-								<button onclick="page_load_first();"><--</button>
-								<button onclick="page_load_prev();"><-</button>
-								<button id='page_index'>0</button>
-								<button onclick="page_load_next();">-></button>
-								<button onclick="page_load_last();">--></button>
+								<input type=button class='button' style="background-image:url('css/web/img/page_first.png')" onclick='page_load_first()'/>
+								<input type=button class='button' style="background-image:url('css/web/img/page_prev.png')" onclick='page_load_prev()'/>
+								<input type=button class='button' style="background-image:url('css/web/img/page_next.png')" onclick='page_load_next()'/>
+								<input type=button class='button' style="background-image:url('css/web/img/page_last.png')" onclick='page_load_last()'/>
+								<input type=button class='button' style="background-image:url('css/web/img/filter.png')" onclick='apply_filter()'/>
+								<button id='page_index' style='display:none'>0</button>
 								<div id="filetree" class='ztree'></div>
 							</td>
 						</tr>
@@ -76,41 +78,38 @@
 		</table>
 		<table>
 			<tr>
-				<!--<td>-->
-					<!--<button onclick="playback()">PlayBackward</button>-->
-				<!--</td>-->
 				<td>
-					<button class="button" onclick="play()">Play</button>
+					<input type=button class='button' style="background-image:url('css/web/img/go_start.png')" onclick='seekbegin()'/>
 				</td>
 				<td>
-					<button class="button" onclick="pause()">Pause</button>
+					<input type=button class='button' style="background-image:url('css/web/img/page_first.png')" onclick='prevframe()'/>
 				</td>
 				<td>
-					<button class="button" onclick="prevframe()">PrevFrame</button>
+					<input type=button class='button' style="background-image:url('css/web/img/play.png')" onclick='play()'/>
 				</td>
 				<td>
-					<button class="button" onclick="nextframe()">NextFrame</button>
+					<input type=button class='button' style="background-image:url('css/web/img/stop.png')" onclick='pause()'/>
 				</td>
 				<td>
-					<button class="button" onclick="seekbegin()">SeekBegin</button>
+					<input type=button class='button' style="background-image:url('css/web/img/page_last.png')" onclick='nextframe()'/>
 				</td>
 				<td>
-					<button class="button" onclick="seekend()">SeekEnd</button>
+					<input type=button class='button' style="background-image:url('css/web/img/go_end.png')" onclick='seekend()'/>
 				</td>		
 				<td>
-					<button class="button" onclick="seekback()">SeekBackward</button>
+					<input type=button class='button' style="background-image:url('css/web/img/seek_backward.png')" onclick='seekback()'/>
 				</td>
 				<td>
-					<select id='speed'>
-						<option value='0.25'>x1/4</option>
-						<option value='4'>x4</option>
-						<option value='10'>x10</option>
-						<option value='30'>x30</option>
-						<option value='90'>x90</option>
+					<input type=button class='button' style="background-image:url('css/web/img/seek_forward.png')" onclick='seekforward()'/>
+				</td>
+				<td>
+					<select id='speed' style="width:60px">
+						<option data-image="css/web/img/x0_25.png" value='0.25'></option>
+						<option data-image="css/web/img/x4.png" value='4'></option>
+						<option data-image="css/web/img/x10.png" value='10'></option>
+						<option data-image="css/web/img/x30.png" value='30'></option>
+						<option data-image="css/web/img/x90.png" value='90'></option>
 					</select>
-				</td>
-				<td>
-					<button class="button" onclick="seekforward()">SeekForward</button>
 				</td>
 
 			</tr>

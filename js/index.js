@@ -184,4 +184,5 @@ function delete_server()
 	tree.removeNode(node);
 	clear_node_information();
 	add_mode();
+	update_content('tip_page.html');
 }

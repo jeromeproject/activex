@@ -1,6 +1,7 @@
 <HTML>
 <HEAD>
 <TITLE>Remote viewer</TITLE>
+<link rel="stylesheet" href="css/web/web.css" type="text/css">
 <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="js/library.js"></script>
@@ -11,7 +12,29 @@
 	<table>
 		<tr>
 			<td>
-				<div>channel status:<span id='channel_st'>0</span>, framerate:<span id='framerate_st'>0</span></div>
+				<div>
+					<img id='ch0_on' src='css/web/img/status_on.png' style='display:none'/>
+					<img id='ch0_off' src='css/web/img/status_off.png' style='display:inline'/>
+					<img id='ch1_on' src='css/web/img/status_on.png' style='display:none'/>
+					<img id='ch1_off' src='css/web/img/status_off.png' style='display:inline'/>
+					<img id='ch2_on' src='css/web/img/status_on.png' style='display:none'/>
+					<img id='ch2_off' src='css/web/img/status_off.png' style='display:inline'/>
+					<img id='ch3_on' src='css/web/img/status_on.png' style='display:none'/>
+					<img id='ch3_off' src='css/web/img/status_off.png' style='display:inline'/>
+"5!@"
+					<input type=button id='1' class='button' style="background-image:url('css/web/img/view_4.png')" onclick='init_seperate4()'/>
+					<input type=button id='0' class='button' style="background-image:url('css/web/img/view_single.png')" onclick='init_single()'/>
+					<input type=button id='2' class='button' style="background-image:url('css/web/img/view_parent_child.png')" onclick='init_parent_child()'/>
+					<select id='channel' onchange="change_channel(this);">
+						<option value=0>Channel 1</option>
+						<option value=1>Channel 2</option>
+						<option value=2>Channel 3</option>
+						<option value=3>Channel 4</option>
+					</select>
+				</div>
+				<!--<div>-->
+					<!--FPS<span id='framerate_st'>0</span>-->
+				<!--</div>-->
 			</td>
 		</tr>
 		<tr>
@@ -22,9 +45,9 @@
 		</tr>
 		<tr>
 			<td>
-				<button class="button" id='1' onclick="init_seperate4();">for4</button>
-				<button class="button" id='0' onclick="init_single();">one</button>
-				<button class="button" id='2' onclick="init_parent_child();">multi</button>
+				<input type=button id='1' class='button' style="background-image:url('css/web/img/view_4.png')" onclick='init_seperate4()'/>
+				<input type=button id='0' class='button' style="background-image:url('css/web/img/view_single.png')" onclick='init_single()'/>
+				<input type=button id='2' class='button' style="background-image:url('css/web/img/view_parent_child.png')" onclick='init_parent_child()'/>
 				<select id='channel' onchange="change_channel(this);">
 					<option value=0>Channel 1</option>
 					<option value=1>Channel 2</option>

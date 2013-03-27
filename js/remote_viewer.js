@@ -206,10 +206,26 @@ function init_viewer(max_channel, open_channel)
 	}
 }
 
+function set_connection_icon(idx, status)
+{
+	var on_id = "ch"+idx+"_on";
+	var off_id = "ch"+idx+"_off";
+
+	if(status == "1")
+	{
+		document.getElementById(on_id).style.display = "inline";
+		document.getElementById(off_id).style.display = "none";
+	}
+	else
+	{
+		document.getElementById(on_id).style.display = "none";
+		document.getElementById(off_id).style.display = "inline";
+	}
+}
+
 function get_connection_info()
 {
-	document.getElementById('channel_st').innerHTML = "";
-	document.getElementById('framerate_st').innerHTML = "";
+	//document.getElementById('framerate_st').innerHTML = "";
 	var status;
 	var fps;
 	var i;
@@ -220,8 +236,8 @@ function get_connection_info()
 		status = viewer.ComViewGeneralCommand(11, 0, 0, 0);
 		fps = viewer.ComViewGeneralCommand(23, 0, 0, 0);
 		
-		document.getElementById('channel_st').innerHTML += status+" ";
-		document.getElementById('framerate_st').innerHTML += fps/1000+" ";
+		set_connection_icon(i, status);
+		//document.getElementById('framerate_st').innerHTML += fps/1000+" ";
 	}
 }
 
