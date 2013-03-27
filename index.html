@@ -1,6 +1,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<link rel="stylesheet" href="css/web/web.css" type="text/css">
 	<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
 	<script type="text/javascript" src="js/library.js"></script>
@@ -52,14 +53,14 @@
 				<table>
 					<tr>
 						<td>
-							<button id=add style='display:inline' onclick='add_server()'>add</button>
-							<button id=update style='display:none' onclick='update_server()'>update</button>
+							<button id=add class='button' style='display:inline;background-image:url(\"css/web/img/add.png\")' onclick='add_server()'>add</button>
+							<button id=update class='button' style='display:none' onclick='update_server()'>update</button>
 						</td>
 						<td>
-							<button id=delete style='display:none' onclick='delete_server()'>del</button>
+							<button id=delete class='button' style='display:none' onclick='delete_server()'>del</button>
 						</td>
 						<td>
-							<button id=cancel style='display:none' onclick='cancel()'>cancel</button>
+							<button id=cancel class='button' style='display:none' onclick='cancel()'>cancel</button>
 						</td>
 					</tr>
 				</table>
