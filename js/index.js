@@ -99,7 +99,7 @@ function add_server()
 	var new_port = document.getElementById('new_port').value;
 	var new_user = document.getElementById('new_user').value;
 	var new_passwd = document.getElementById('new_passwd').value;
-	if(new_address.length == 0 || new_port.length == 0 || new_user.length == 0 || new_passwd.length == 0)
+	if(new_address.length == 0 || new_port.length == 0 || new_user.length == 0)
 	{
 		alert("invalid parameter");
 		return;
