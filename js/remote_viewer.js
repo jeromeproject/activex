@@ -24,7 +24,6 @@ function get_input_params()
 	}
 }
 
-
 function gen_connection_str(ip, port, username, password, channel)
 {
 	var param = "";
@@ -64,10 +63,57 @@ function change_channel(e)
 	}	
 }
 
+function adjust_size()
+{
+	var window_w = document.body.offsetWidth;
+	var window_h = document.body.offsetHeight*0.9;
+	var width = (window_w>MAX_WIDTH)? MAX_WIDTH: (window_w<MIN_WIDTH)? MIN_WIDTH: window_w;
+	var height = (window_h>MAX_HEIGHT)? MAX_HEIGHT: (window_h<MIN_HEIGHT)? MIN_HEIGHT: window_h;
+	var exit = 0;
+	var i;
+	for(i=0; i<4; i++)
+	{
+		var id = "RemoteViewer"+i;
+		var obj = document.getElementById(id);
+		switch(g_type)
+		{
+			case '0':
+				obj.width = parseInt(width>>1, 10);
+				obj.height = parseInt(height>>1, 10);
+				break;
+			case '1':
+				obj.width = width;
+				obj.height = height;
+				exit = 1;
+				break;
+			case '2':
+				var w;
+				var h;
+				if(id == "RemoteViewer0")
+				{
+					w = parseInt(width*0.8, 10);
+					h = parseInt(height*0.8, 10);
+				}
+				else
+				{
+					w = width - parseInt(width*0.8, 10);
+					h = parseInt(height*0.3, 10);
+				}
+				obj.width = w;
+				obj.height = h;
+				break;
+		}
+
+		if(exit)
+			break;
+	}
+}
+
 function load_ui(html)
 {
 	var viewarea = document.getElementById('viewarea');
 	viewarea.innerHTML = html;
+	adjust_size();
 }
 
 function gen_seperate4_html()
