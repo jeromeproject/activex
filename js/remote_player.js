@@ -194,7 +194,7 @@ function get_filelist()
 			// filename : C:\\xxxx\xxxx\ch_0000_2011010...
 			var tmp = filename.split('\\');
 			var filename_string = tmp[tmp.length-1].split('_');
-			// let
+			// let filelist format like YYYYMMDD_hhmmss
 			g_filename_list[i] = filename_string[2] + "_" + filename_string[3];
 		}
 	}
