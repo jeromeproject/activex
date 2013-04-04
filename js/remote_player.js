@@ -267,7 +267,9 @@ function init()
 	catch(e)
 	{
 		init_active_fail();
+		return;
 	}
+
 	var channel = get_channel();
 	if(channel >= MIN_CHANNEL && channel <= MAX_CHANNEL)
 	{
@@ -278,7 +280,8 @@ function init()
 		var port = info[1];
 		var user = info[2];
 		var passwd = info[3];
-		RemotePlayer.ComSetupConnect(g_PLAYER_INDEX, address, port, user, passwd, undefined, undefined, undefined, undefined, channel);
+		var map = info[4];
+		RemotePlayer.ComSetupConnect(g_PLAYER_INDEX, address, port, user, passwd, undefined, undefined, undefined, undefined, map[channel]);
 		RemotePlayer.ComEmbedPlayer(0);
 		intervalID = window.setInterval("get_filelist()", 500);
 	}
