@@ -208,6 +208,8 @@ function init_viewer(max_channel, open_channel)
 	//var channel_map = [0, 1, 2, 3];
 
 	var tree = get_tree_from_parent("maintree");
+
+	// [address, port, user, passwd, map]
 	var info = get_server_info_with_select(tree);
 	var address = info[0];
 	var port = info[1];
@@ -217,19 +219,21 @@ function init_viewer(max_channel, open_channel)
 	if(g_type == '2')
 	{
 		// need to change major channel
-		
-		//channel_map[0] = open_channel;
-		//var count = 0;
-		//var i = 1;
-		//while(i < g_max_channel_num[g_type])
-		//{
-			//if(count != open_channel)
-			//{
-				//channel_map[i] = count;
-				//i++;
-			//}
-			//count++;
-		//}
+		var tmp_array = new Array();
+		tmp_array[0] = channel_map[open_channel];
+		var tmp_count = 0;
+		var i = 1;
+		while(i < g_max_channel_num[g_type])
+		{
+			if(tmp_count != open_channel)
+			{
+				tmp_array[i] = channel_map[tmp_count];
+				i++;
+			}
+			tmp_count++;
+		}
+
+		channel_map = tmp_array;
 	}
 	
 	var i;
