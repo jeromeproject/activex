@@ -76,7 +76,7 @@ function load_map_to_ui(map_array, max_chn)
 	for(i=0; i<max_chn; i++)
 	{
 		var id = MAP_CH_PREFIX+i;
-		document.getElementById(id).value = map_array[i];
+		document.getElementById(id).value = map_array[i]+1;
 	}
 }
 
@@ -100,7 +100,8 @@ function load_map_from_ui(max_chn)
 		var value = document.getElementById(id).value;
 		if(value == "")
 			value = i+1;
-		map_array[i] = value;
+		// user input 1~n, we need 0~n-1
+		map_array[i] = parseInt(value, 10)-1;
 	}
 	return map_array;
 }

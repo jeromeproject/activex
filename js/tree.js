@@ -27,6 +27,7 @@ function get_server_info_with_select(tree)
 	info[1] = node.port;
 	info[2] = node.username;
 	info[3] = node.passwd;
+	info[4] = node.map;
 	return info;
 }
 

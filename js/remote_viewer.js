@@ -205,22 +205,7 @@ function init_parent_child(major_channel)
 function init_viewer(max_channel, open_channel)
 {
 	destroy();
-	var channel_map = [0, 1, 2, 3];
-	if(g_type == '2')
-	{
-		channel_map[0] = open_channel;
-		var count = 0;
-		var i = 1;
-		while(i < g_max_channel_num[g_type])
-		{
-			if(count != open_channel)
-			{
-				channel_map[i] = count;
-				i++;
-			}
-			count++;
-		}
-	}
+	//var channel_map = [0, 1, 2, 3];
 
 	var tree = get_tree_from_parent("maintree");
 	var info = get_server_info_with_select(tree);
@@ -228,6 +213,24 @@ function init_viewer(max_channel, open_channel)
 	var port = info[1];
 	var user = info[2];
 	var passwd = info[3];
+	var channel_map = info[4];
+	if(g_type == '2')
+	{
+		// need to change major channel
+		
+		//channel_map[0] = open_channel;
+		//var count = 0;
+		//var i = 1;
+		//while(i < g_max_channel_num[g_type])
+		//{
+			//if(count != open_channel)
+			//{
+				//channel_map[i] = count;
+				//i++;
+			//}
+			//count++;
+		//}
+	}
 	
 	var i;
 	for(i=0; i<max_channel; i++)
@@ -236,12 +239,18 @@ function init_viewer(max_channel, open_channel)
 		var id = "RemoteViewer"+i;
 		var viewer = document.getElementById(id);
 		
-		if(i == open_channel && g_type == '1')
+		if(g_type == '1')
 		{
-			// only single mode enter here.
-			// change viewer size and hide others
-			viewer.width = 1024;
-			viewer.height = 720;
+			if(i == open_channel)
+			{
+				viewer.width = MAX_WIDTH;
+				viewer.height = MAX_HEIGHT;
+			}
+			else
+			{
+				viewer.width = 1;
+				viewer.height = 1;
+			}
 		}
 		
 		if(viewer.ComSetSourceTextSetting(param) == "false")
