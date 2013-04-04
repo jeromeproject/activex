@@ -31,10 +31,37 @@ function get_server_info()
 		document.getElementById('server_st').innerHTML = "0";
 }
 
+function init_tree()
+{
+	if(document.cookie.length == 0)
+		return;
+
+	var cookies = document.cookie.split(';');
+	var i;
+	for(i=0; i<cookies.length; i++)
+	{
+		// cookie format 
+		// ip:port=username,passwd,map1,map2,map3,map4
+		var tmp = cookies[i].split('=');
+		var ip = tmp[0].split(':')[0];
+		var port = tmp[0].split(':')[1];
+		var user = tmp[1].split(',')[0];
+		var passwd = tmp[1].split(',')[1];
+		var map = new Array();
+		var j;
+		for(j=0; j<tmp[1].split(',').length-2; j++)
+		{
+			map[j] = tmp[1].split(',')[j+2];
+		}
+		_add_server(ip, port, user, passwd, map);
+	}
+}
+
 function init()
 {
 	//window.setInterval("get_server_info()", 5000);
 	add_mode();
+	init_tree();
 }
 
 function reload_iframe()
@@ -52,7 +79,7 @@ function set_button_show(btn_id)
 	document.getElementById(btn_id).style.display = 'inline';
 }
 
-// ui control
+// button control
 function add_mode()
 {
 	set_button_show('add');
@@ -76,7 +103,7 @@ function load_map_to_ui(map_array, max_chn)
 	for(i=0; i<max_chn; i++)
 	{
 		var id = MAP_CH_PREFIX+i;
-		document.getElementById(id).value = map_array[i]+1;
+		document.getElementById(id).value = parseInt(map_array[i], 10)+1;
 	}
 }
 
@@ -137,19 +164,54 @@ function cancel()
 	add_mode();
 }
 
-function add_server()
+function add_cookie(name, value)
 {
-	var new_address = document.getElementById('new_address').value;
-	var new_port = document.getElementById('new_port').value;
-	var new_user = document.getElementById('new_user').value;
-	var new_passwd = document.getElementById('new_passwd').value;
-	var new_map = load_map_from_ui(4);
-	if(new_address.length == 0 || new_port.length == 0 || new_user.length == 0)
-	{
-		alert("invalid parameter");
-		return;
-	}
+	var expire = new Date();
+	expire.setYear(expire.getYear()+10);
+	var cookie = name+"="+value+";expires="+expire.toGMTString();
+	document.cookie = cookie;
+}
 
+function get_cookie(name)
+{
+        var start = document.cookie.indexOf( name + "=" );
+        var len = start + name.length + 1;
+        if( ( !start ) && ( name != document.cookie.substring( 0, name.length ) ) )
+        {
+                return null;
+        }
+        if( start == -1 )
+        {
+                return null;
+        }
+        var end = document.cookie.indexOf( ';', len );
+        if( end == -1 )
+        {
+                end = document.cookie.length;
+        }
+        return unescape( document.cookie.substring( len, end ) );
+}
+
+function del_cookie(name)
+{
+        var exp = new Date();
+        exp.setTime( exp.getTime() - 1 );
+        var cval = get_cookie( name );
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+} 
+
+function get_cookie_name(node)
+{
+	return node.address+":"+node.port;
+}
+
+function get_cookie_value(node)
+{
+	return node.user+","+node.passwd+","+node.map;
+}
+
+function _add_server(new_address, new_port, new_user, new_passwd, new_map)
+{	
 	var tree = get_tree('maintree');
 	var node = tree.getNodesByParam('name', new_address)[0];
 	if(node)
@@ -200,9 +262,31 @@ function add_server()
 			]
 		}
 	];
+
+	// add cookie
+	var name = new_address+":"+new_port;
+	var value = new_user+","+new_passwd+","+new_map;
+	add_cookie(name, value);	
+	
 	tree.addNodes(undefined, new_server, 0);
 	clear_node_information();
 	add_mode();
+}
+
+function add_server()
+{
+	var new_address = document.getElementById('new_address').value;
+	var new_port = document.getElementById('new_port').value;
+	var new_user = document.getElementById('new_user').value;
+	var new_passwd = document.getElementById('new_passwd').value;
+	var new_map = load_map_from_ui(4);
+	if(new_address.length == 0 || new_port.length == 0 || new_user.length == 0)
+	{
+		alert("invalid parameter");
+		return;
+	}
+
+	_add_server(new_address, new_port, new_user, new_passwd, new_map);
 }
 
 function update_server()
@@ -210,16 +294,22 @@ function update_server()
 	var tree = get_tree('maintree');
 	var node = tree_get_current_node(tree);
 	node = get_top_node(node);
+
+	del_cookie(get_cookie_name(node));
+
 	node.address = document.getElementById("new_address").value;
 	node.name = node.address;
 	node.port = document.getElementById("new_port").value;
 	node.username = document.getElementById("new_user").value;
 	node.passwd = document.getElementById("new_passwd").value;
 	node.map = load_map_from_ui(4);
+
+	add_cookie(get_cookie_name(node), get_cookie_value(node));
+
 	tree.updateNode(node, true);
 	clear_node_information();
 	add_mode();
-	reload_iframe();
+	reload_iframe();	
 }
 
 function delete_server()
@@ -227,6 +317,9 @@ function delete_server()
 	var tree = get_tree('maintree');
 	var node = tree_get_current_node(tree);
 	node = get_top_node(node);
+
+	del_cookie(get_cookie_name(node));
+
 	tree.removeChildNodes(node);
 	tree.removeNode(node);
 	clear_node_information();

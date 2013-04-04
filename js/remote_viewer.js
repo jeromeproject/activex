@@ -97,7 +97,7 @@ function adjust_size()
 				else
 				{
 					w = width - parseInt(width*0.8, 10);
-					h = parseInt(height*0.3, 10);
+					h = parseInt(height*0.25, 10);
 				}
 				obj.width = w;
 				obj.height = h;
