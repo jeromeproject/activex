@@ -1,3 +1,5 @@
+MAP_CH_PREFIX="map_ch"
+
 function update_content(src)
 {
 	var iframe = document.getElementById('content');
@@ -50,6 +52,7 @@ function set_button_show(btn_id)
 	document.getElementById(btn_id).style.display = 'inline';
 }
 
+// ui control
 function add_mode()
 {
 	set_button_show('add');
@@ -66,12 +69,50 @@ function update_mode()
 	set_button_show('cancel');
 }
 
+// map value control
+function load_map_to_ui(map_array, max_chn)
+{
+	var i;
+	for(i=0; i<max_chn; i++)
+	{
+		var id = MAP_CH_PREFIX+i;
+		document.getElementById(id).value = map_array[i];
+	}
+}
+
+function clear_map_ui(max_chn)
+{
+	var i;
+	for(i=0; i<max_chn; i++)
+	{
+		var id = MAP_CH_PREFIX+i;
+		document.getElementById(id).value = "";
+	}
+}
+
+function load_map_from_ui(max_chn)
+{
+	var map_array = new Array();
+	var i;
+	for(i=0; i<max_chn; i++)
+	{
+		var id = MAP_CH_PREFIX+i;
+		var value = document.getElementById(id).value;
+		if(value == "")
+			value = i+1;
+		map_array[i] = value;
+	}
+	return map_array;
+}
+
+// input columne control
 function clear_node_information()
 {
 	document.getElementById('new_address').value = "";
 	document.getElementById('new_port').value = "";
 	document.getElementById('new_user').value = "";
 	document.getElementById('new_passwd').value = "";
+	clear_map_ui(4);
 }
 
 function show_node_information(event, treeid, node)
@@ -81,6 +122,7 @@ function show_node_information(event, treeid, node)
 	document.getElementById('new_port').value = top_node.port;
 	document.getElementById('new_user').value = top_node.username;
 	document.getElementById('new_passwd').value = top_node.passwd;
+	load_map_to_ui(top_node.map, 4);
 	update_mode();
 }
 
@@ -90,6 +132,7 @@ function cancel()
 	document.getElementById('new_port').value = "";
 	document.getElementById('new_user').value = "";
 	document.getElementById('new_passwd').value = "";
+	clear_map_ui(4);
 	add_mode();
 }
 
@@ -99,6 +142,7 @@ function add_server()
 	var new_port = document.getElementById('new_port').value;
 	var new_user = document.getElementById('new_user').value;
 	var new_passwd = document.getElementById('new_passwd').value;
+	var new_map = load_map_from_ui(4);
 	if(new_address.length == 0 || new_port.length == 0 || new_user.length == 0)
 	{
 		alert("invalid parameter");
@@ -122,6 +166,7 @@ function add_server()
 			username:new_user,
 			passwd:new_passwd,
 			name:new_address,
+			map:new_map,
 			children:
 			[
 				{ 
@@ -169,6 +214,7 @@ function update_server()
 	node.port = document.getElementById("new_port").value;
 	node.username = document.getElementById("new_user").value;
 	node.passwd = document.getElementById("new_passwd").value;
+	node.map = load_map_from_ui(4);
 	tree.updateNode(node, true);
 	clear_node_information();
 	add_mode();
