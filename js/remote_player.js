@@ -251,6 +251,12 @@ function set_filter_today()
 	var day = today.getDate();
 	set_filter(year, month, day, year, month, day);
 	
+	if(parseInt(month) < 10)
+		month = "0"+month;
+
+	if(parseInt(day) < 10)
+		day = "0"+day;
+
 	document.getElementById('start_date').value = year+"/"+month+"/"+day;
 	document.getElementById('end_date').value = year+"/"+month+"/"+day;
 }
