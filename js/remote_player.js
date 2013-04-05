@@ -172,9 +172,10 @@ function big_array()
 function get_filelist()
 {
 	var net_status = RemotePlayer.ComGetPlayerNetStatus(g_PLAYER_INDEX);
+	// wait connection is ready or retry
 	if(net_status != 3)
 		return;
-	
+
 	window.clearInterval(intervalID);
 	
 	// initial
@@ -200,6 +201,7 @@ function get_filelist()
 	}
 	
 	//big_array();
+	// push child number and how many pages we need.
 	g_parent_node.child_num = g_filename_list.length;
 	g_parent_node.last_page = parseInt(g_parent_node.child_num/g_parent_node.page_size, 10);
 	page_load_index(0);
@@ -207,6 +209,7 @@ function get_filelist()
 
 function check_filter_rule(id)
 {
+	// auto swap date if out of bound
 	var s_obj = document.getElementById('start_date');
 	var s = s_obj.value.split("/");
 	var s_t = s[0]*10000+s[1]*100+s[2];
@@ -259,6 +262,28 @@ function set_filter_today()
 
 	document.getElementById('start_date').value = year+"/"+month+"/"+day;
 	document.getElementById('end_date').value = year+"/"+month+"/"+day;
+}
+
+var PIC_Command = new Object();
+PIC_Command["PIC_MP_Reload"] = 0;
+PIC_Command["PIC_MP_Snapshot"] = 1;
+PIC_Command["PIC_MP_Save"] = 2;
+PIC_Command["PIC_MP_Delete"] = 3;
+
+function del_file()
+{
+	RemotePlayer.ComExecuteIntegratedCommand(PIC_Command["PIC_MP_Delete"], 0);
+	//RemotePlayer.ComExecuteIntegratedCommand(PIC_Command["PIC_MP_Reload"], 0);
+	
+	// reinit filetree
+	tree_destroy_from_node(g_filetree, g_parent_node);
+	RemotePlayer.ComReconnectAllPlayer(g_PLAYER_INDEX);
+	get_filelist();
+}
+
+function download_file()
+{
+	RemotePlayer.ComExecuteIntegratedCommand(PIC_Command["PIC_MP_Save"], 0);
 }
 
 var intervalID;
