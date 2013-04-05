@@ -300,7 +300,7 @@ function update_server()
 	node.address = document.getElementById("new_address").value;
 	node.name = node.address;
 	node.port = document.getElementById("new_port").value;
-	node.username = document.getElementById("new_user").value;
+	node.user = document.getElementById("new_user").value;
 	node.passwd = document.getElementById("new_passwd").value;
 	node.map = load_map_from_ui(4);
 
