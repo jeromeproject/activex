@@ -1,3 +1,5 @@
+var g_max_channel = 16;		// every js has this variable
+
 MAP_CH_PREFIX="map_ch"
 
 function update_content(src)
@@ -126,7 +128,7 @@ function load_map_from_ui(max_chn)
 		var id = MAP_CH_PREFIX+i;
 		var value = document.getElementById(id).value;
 		if(value == "")
-			value = i+1;
+			value = "0";
 		// user input 1~n, we need 0~n-1
 		map_array[i] = parseInt(value, 10)-1;
 	}
@@ -140,7 +142,7 @@ function clear_node_information()
 	document.getElementById('new_port').value = "";
 	document.getElementById('new_user').value = "";
 	document.getElementById('new_passwd').value = "";
-	clear_map_ui(4);
+	clear_map_ui(g_max_channel);
 }
 
 function show_node_information(event, treeid, node)
@@ -150,7 +152,7 @@ function show_node_information(event, treeid, node)
 	document.getElementById('new_port').value = top_node.port;
 	document.getElementById('new_user').value = top_node.username;
 	document.getElementById('new_passwd').value = top_node.passwd;
-	load_map_to_ui(top_node.map, 4);
+	load_map_to_ui(top_node.map, g_max_channel);
 	update_mode();
 }
 
@@ -160,7 +162,7 @@ function cancel()
 	document.getElementById('new_port').value = "";
 	document.getElementById('new_user').value = "";
 	document.getElementById('new_passwd').value = "";
-	clear_map_ui(4);
+	clear_map_ui(g_max_channel);
 	add_mode();
 }
 
@@ -279,7 +281,7 @@ function add_server()
 	var new_port = document.getElementById('new_port').value;
 	var new_user = document.getElementById('new_user').value;
 	var new_passwd = document.getElementById('new_passwd').value;
-	var new_map = load_map_from_ui(4);
+	var new_map = load_map_from_ui(g_max_channel);
 	if(new_address.length == 0 || new_port.length == 0 || new_user.length == 0)
 	{
 		alert("invalid parameter");
@@ -302,7 +304,7 @@ function update_server()
 	node.port = document.getElementById("new_port").value;
 	node.user = document.getElementById("new_user").value;
 	node.passwd = document.getElementById("new_passwd").value;
-	node.map = load_map_from_ui(4);
+	node.map = load_map_from_ui(g_max_channel);
 
 	add_cookie(get_cookie_name(node), get_cookie_value(node));
 

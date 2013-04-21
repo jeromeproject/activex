@@ -57,21 +57,23 @@
 						<tr>
 							<td>
 								<div>Fliter</div>
-								<div>Start<input type="text" name="start_date" class="tcal" value="" /></div>
-								<div>End<input type="text" name="end_date" class="tcal" value="" /></div>
+								<div>Start<input type="text" id="start_date" class="tcal" value="" /></div>
+								<div>End<input type="text" id="end_date" class="tcal" value="" /></div>
+								<input type=image class='button' src="css/web/img/filter.png" onclick='apply_filter()' title="篩選"/>
 							</td>
 						</tr>
 				<tr>
 							<td>
-								<input type=button class='button' style="background-image:url('css/web/img/page_first.png')" onclick='page_load_first()'/>
-								<input type=button class='button' style="background-image:url('css/web/img/page_prev.png')" onclick='page_load_prev()'/>
-								<input type=button class='button' style="background-image:url('css/web/img/page_next.png')" onclick='page_load_next()'/>
-								<input type=button class='button' style="background-image:url('css/web/img/page_last.png')" onclick='page_load_last()'/>
-								<input type=button class='button' style="background-image:url('css/web/img/filter.png')" onclick='apply_filter()'/>
+								<input type=image class='button' src="css/web/img/page_first.png" onclick='page_load_first()' title="第一頁"/>
+								<input type=image class='button' src="css/web/img/page_prev.png" onclick='page_load_prev()' title="上一頁"/>
+								<input type=image class='button' src="css/web/img/page_next.png" onclick='page_load_next()' title="下一頁"/>
+								<input type=image class='button' src="css/web/img/page_last.png" onclick='page_load_last()' title="最後一頁"/>
 								<!--<button onclick='download_file()'>download</button>-->
 								<!--<button onclick='del_file()'>delete</button>-->
 								<button id='page_index' style='display:none'>0</button>
 								<div id="filetree" class='ztree'></div>
+								<input type=image class='button' src="css/web/img/pb_delete.png" onclick='pb_delete()' title="刪除檔案" />
+								<input type=image class='button' src="css/web/img/pb_download.png" onclick='pb_download()'  title="下載檔案"/>
 							</td>
 						</tr>
 					</table>
@@ -81,30 +83,38 @@
 		<table>
 			<tr>
 				<td>
-					<input type=button class='button' style="background-image:url('css/web/img/go_start.png')" onclick='seekbegin()'/>
+					<input type=image class='button' src="css/web/img/go_start.png" onclick='seekbegin()' title="到開頭"/>
 				</td>
 				<td>
-					<input type=button class='button' style="background-image:url('css/web/img/page_first.png')" onclick='prevframe()'/>
+					<input type=image class='button' src="css/web/img/page_first.png" onclick='prevframe()' title="上一張"/>
 				</td>
 				<td>
-					<input type=button class='button' style="background-image:url('css/web/img/play.png')" onclick='play()'/>
+					<input type=image class='button' src="css/web/img/play.png" onclick='play()' title="播放"/>
 				</td>
 				<td>
-					<input type=button class='button' style="background-image:url('css/web/img/stop.png')" onclick='pause()'/>
+					<input type=image class='button' src="css/web/img/stop.png" onclick='pause()' title="暫停"/>
 				</td>
 				<td>
-					<input type=button class='button' style="background-image:url('css/web/img/page_last.png')" onclick='nextframe()'/>
+					<input type=image class='button' src="css/web/img/page_last.png" onclick='nextframe()' title="下一張"/>
 				</td>
 				<td>
-					<input type=button class='button' style="background-image:url('css/web/img/go_end.png')" onclick='seekend()'/>
+					<input type=image class='button' src="css/web/img/go_end.png" onclick='seekend()' title="到底"/>
 				</td>		
 				<td>
-					<input type=button class='button' style="background-image:url('css/web/img/seek_backward.png')" onclick='seekback()'/>
+					<input type=image class='button' src="css/web/img/seek_backward.png" onclick='seekback()' title="回撥"/>
 				</td>
 				<td>
-					<input type=button class='button' style="background-image:url('css/web/img/seek_forward.png')" onclick='seekforward()'/>
+					<input type=image class='button' src="css/web/img/seek_forward.png" onclick='seekforward()' title="加速"/>
 				</td>
 				<td>
+					<select id='speed'  title="速度">
+						<option value='0.25'>0.25X</option>
+						<option value='4'>4X</option>
+						<option value='10'>10X</option>
+						<option value='30'>30X</option>
+						<option value='90'>90X</option>
+					</select>
+				<!-- not cross version
 					<select id='speed' style="width:60px">
 						<option data-image="css/web/img/x0_25.png" value='0.25'></option>
 						<option data-image="css/web/img/x4.png" value='4'></option>
@@ -112,6 +122,7 @@
 						<option data-image="css/web/img/x30.png" value='30'></option>
 						<option data-image="css/web/img/x90.png" value='90'></option>
 					</select>
+				-->
 				</td>
 
 			</tr>

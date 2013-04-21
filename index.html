@@ -50,21 +50,39 @@
 				Port<input id=new_port type=text></input><br>
 				User<input id=new_user type=text></input><br>
 				Passwd<input id=new_passwd type=password></input><br>
-				Mapping<input id=map_ch0 type=text maxlength="3" size="3"></input>
-				<input id=map_ch1 type=text maxlength="3" size="3"></input>
-				<input id=map_ch2 type=text maxlength="3" size="3"></input>
-				<input id=map_ch3 type=text maxlength="3" size="3"></input><br>
+				Channel Number:<br>
+				視界1<input id=map_ch0 type=text maxlength="3" size="3"></input><br>
+				視界2<input id=map_ch1 type=text maxlength="3" size="3"></input><br>
+				視界3<input id=map_ch2 type=text maxlength="3" size="3"></input><br>
+				視界4<input id=map_ch3 type=text maxlength="3" size="3"></input><br>
+				視界5<input id=map_ch4 type=text maxlength="3" size="3"></input><br>
+				視界6<input id=map_ch5 type=text maxlength="3" size="3"></input><br>
+				視界7<input id=map_ch6 type=text maxlength="3" size="3"></input><br>
+				視界8<input id=map_ch7 type=text maxlength="3" size="3"></input><br>
+				視界9<input id=map_ch8 type=text maxlength="3" size="3"></input><br>
+				視界10<input id=map_ch9 type=text maxlength="3" size="3"></input><br>
+				視界11<input id=map_ch10 type=text maxlength="3" size="3"></input><br>
+				視界12<input id=map_ch11 type=text maxlength="3" size="3"></input><br>
+				視界13<input id=map_ch12 type=text maxlength="3" size="3"></input><br>
+				視界14<input id=map_ch13 type=text maxlength="3" size="3"></input><br>
+				視界15<input id=map_ch14 type=text maxlength="3" size="3"></input><br>
+				視界16<input id=map_ch15 type=text maxlength="3" size="3"></input><br>
 				<table>
 					<tr>
 						<td>
-							<input type=button id=add class='button' style="display:inline;background-image:url('css/web/img/add.png')" onclick='add_server()'/>
-							<input type=button id=update class='button' style="display:inline;background-image:url('css/web/img/update.png')" onclick='update_server()'/>
+						<input type=image id='add' class='button' src="css/web/img/add.png" onclick='add_server()' title="新增"/>
+						<input type=image id='update' class='button' src="css/web/img/update.png" onclick='update_server()' title="更新"/>
+						<!--
+					<input type=button id=add class='button' style="display:inline;background-image:url('css/web/img/add.png')" onclick='add_server()'/>
+							<input type=button id=update class='button' style="display:inline;background-image:url('css/web/img/update.png')" onclick='update_server()'/>-->
 						</td>
 						<td>
-							<input type=button id=delete class='button' style="display:inline;background-image:url('css/web/img/delete.png')" onclick='delete_server()'/>
+							<input type=image id='delete' class='button' src="css/web/img/delete.png" onclick='delete_server()' title="刪除"/>
+							<!--<input type=button id=delete class='button' style="display:inline;background-image:url('css/web/img/delete.png')" onclick='delete_server()'/>-->
 						</td>
 						<td>
-							<input type=button id=cancel class='button' style="display:inline;background-image:url('css/web/img/cancel.png')" onclick='cancel()'/>
+							<input type=image id='cancel' class='button' src="css/web/img/cancel.png" onclick='cancel()' title="清除欄位"/>
+							<!--<input type=button id=cancel class='button' style="display:inline;background-image:url('css/web/img/cancel.png')" onclick='cancel()'/>-->
 						</td>
 					</tr>
 				</table>
@@ -74,7 +92,7 @@
 				<iframe 
 					id          ="content" 
 					frameborder ="0" 
-					scrolling   ="no" 
+					scrolling   ="yes" 
 					style       ="width:100%;height:100%;"
 					src	="tip_page.html"
 				>

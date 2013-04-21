@@ -185,6 +185,7 @@ function get_filelist()
 	g_filename_list = [];
 	
 	var list = RemotePlayer.ComGetFileListVariant(g_PLAYER_INDEX);
+	// alert(list);
 	var s = new Array();
 	s = list.split("\n");
 	for(var i=0; i<s.length-1; i++)
@@ -233,6 +234,7 @@ function check_filter_rule(id)
 function apply_filter()
 {
 	// format: yyyy/mm/dd
+	// alert(document.getElementById('start_date'));
 	var s = document.getElementById('start_date').value.split("/");
 	var e = document.getElementById('end_date').value.split("/");
 	set_filter(s[0], s[1], s[2], e[0], e[1], e[2]);
@@ -332,4 +334,20 @@ function destroy()
 	{
 		//init_active_fail();
 	}
+}
+
+//
+var PIC_MP_Reload=0;    // 重新載入檔案列表
+var PIC_MP_Snapshot=1;    // 將目前播放中的動態影片目前單張影像，儲存成檔案（會呼叫Snapshotter.exe）
+var PIC_MP_Save=2;    // 開啟"儲存至"對話盒
+var PIC_MP_Delete=3;    // 刪除目前播放中的檔案，並且會出現確認對話盒
+
+function pb_delete()
+{
+	RemotePlayer.ComExecuteIntegratedCommand(PIC_MP_Delete, 0);
+}
+
+function pb_download()
+{
+	RemotePlayer.ComExecuteIntegratedCommand(PIC_MP_Save, 2);
 }

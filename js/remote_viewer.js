@@ -1,5 +1,6 @@
+var g_max_channel = 16;		// every js has this variable
 var g_type;  // 0: seperate to 4 windows, 1: single window, 2: parent-child
-var g_max_channel_num = [4, 4, 4];
+var g_max_channel_num = [g_max_channel, g_max_channel, g_max_channel, g_max_channel];	// showing sets of camera status in different view
 
 // get input parameters from url after '?'
 function get_input_params()
@@ -59,6 +60,9 @@ function change_channel(e)
 			case '2':
 				init_parent_child(idx);
 				break;
+			case '3':
+				init_seperate16();
+				break;
 		}
 	}	
 }
@@ -71,22 +75,24 @@ function adjust_size()
 	var height = (window_h>MAX_HEIGHT)? MAX_HEIGHT: (window_h<MIN_HEIGHT)? MIN_HEIGHT: window_h;
 	var exit = 0;
 	var i;
-	for(i=0; i<4; i++)
+	for(i=0; i<g_max_channel; i++)
 	{
 		var id = "RemoteViewer"+i;
 		var obj = document.getElementById(id);
 		switch(g_type)
 		{
-			case '0':
+			case '0': // 2x2
 				obj.width = parseInt(width>>1, 10);
 				obj.height = parseInt(height>>1, 10);
+				if(i == 3)
+					exit = 1;
 				break;
 			case '1':
 				obj.width = width;
 				obj.height = height;
 				exit = 1;
 				break;
-			case '2':
+			case '2': // parent-childs
 				var w;
 				var h;
 				if(id == "RemoteViewer0")
@@ -101,6 +107,12 @@ function adjust_size()
 				}
 				obj.width = w;
 				obj.height = h;
+				if(i == 3)
+					exit = 1;
+				break;
+			case '3': // 4x4
+				obj.width = parseInt(width>>2, 10);
+				obj.height = parseInt(height>>2, 10);
 				break;
 		}
 
@@ -138,6 +150,8 @@ function gen_seperate4_html()
 			</tr>\
 		</table>\
 		";
+	for( i = 4; i < g_max_channel; ++i)
+		html += "<OBJECT ID='RemoteViewer" + i +"' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=1 height=1></OBJECT>";
 	return html;
 }
 
@@ -148,12 +162,86 @@ function init_seperate4()
 	init_viewer(g_max_channel_num[g_type]);
 }
 
+function gen_seperate16_html()
+{	
+	var html = 
+		"<table>\
+			<tr>\
+				<td>\
+					<OBJECT ID='RemoteViewer0' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer1' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer2' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer3' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+			</tr>\
+			<tr>\
+				<td>\
+					<OBJECT ID='RemoteViewer4' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer5' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer6' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer7' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+			</tr>\
+			<tr>\
+				<td>\
+					<OBJECT ID='RemoteViewer8' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer9' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer10' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer11' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+			</tr>\
+			<tr>\
+				<td>\
+					<OBJECT ID='RemoteViewer12' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer13' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer14' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+				<td>\
+					<OBJECT ID='RemoteViewer15' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=540 height=360></OBJECT>\
+				</td>\
+			</tr>\
+		</table>\
+		";
+	return html;
+}
+
+function init_seperate16()
+{
+	g_type = '3';
+	load_ui(gen_seperate16_html());
+	init_viewer(g_max_channel_num[g_type]);
+}
+
 function gen_single_html(channel)
 {
 	var html = "<OBJECT ID='RemoteViewer0' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>";
 	html += "<OBJECT ID='RemoteViewer1' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>";
 	html += "<OBJECT ID='RemoteViewer2' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>";
 	html += "<OBJECT ID='RemoteViewer3' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>";
+	for( i = 4; i < g_max_channel; ++i)
+		html += "<OBJECT ID='RemoteViewer" + i +"' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=1 height=1></OBJECT>";
 	return html;
 }
 
@@ -176,19 +264,21 @@ function gen_parent_child_html()
 				html += "</td>";
 				html += "<td>";
 					html += "<table>";
-						html += "<tr>";
+						html += "<tr><td>";
 							html += "<OBJECT ID='RemoteViewer1' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=240 height=160></OBJECT>";
-						html += "</tr>";
-						html += "<tr>";
+						html += "</td></tr>";
+						html += "<tr><td>";
 							html += "<OBJECT ID='RemoteViewer2' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=240 height=160></OBJECT>";
-						html += "</tr>";
-						html += "<tr>";
+						html += "</td></tr>";
+						html += "<tr><td>";
 							html += "<OBJECT ID='RemoteViewer3' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=240 height=160></OBJECT>";
-						html += "</tr>";
+						html += "</td></tr>";
 					html += "</table>";
 				html += "</td>";
 			html += "</tr>";
 	html += "</table>";
+	for( i = 4; i < g_max_channel; ++i)
+		html += "<OBJECT ID='RemoteViewer" + i +"' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=1 height=1></OBJECT>";
 	return html;
 }
 
@@ -215,7 +305,7 @@ function init_viewer(max_channel, open_channel)
 	var port = info[1];
 	var user = info[2];
 	var passwd = info[3];
-	var channel_map = info[4];
+	var channel_map = info[4];	//g_max_channel
 	if(g_type == '2')
 	{
 		// need to change major channel
@@ -232,13 +322,17 @@ function init_viewer(max_channel, open_channel)
 			}
 			tmp_count++;
 		}
-
 		channel_map = tmp_array;
 	}
 	
 	var i;
 	for(i=0; i<max_channel; i++)
 	{
+		if(channel_map[i] == -1)
+		{
+			//alert("-1 channel");
+			continue;
+		}
 		var param = gen_connection_str(address, port, user, passwd, channel_map[i]);		
 		var id = "RemoteViewer"+i;
 		var viewer = document.getElementById(id);
@@ -315,6 +409,9 @@ function init()
 			break;
 		case '2':
 			init_parent_child(channel);
+			break;
+		case '3':
+			init_seperate16();
 			break;
 	}
 	window.setInterval("get_connection_info()", 2000);
