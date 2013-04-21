@@ -1,0 +1,17 @@
+<html>
+<head>
+</head>
+<body onload="">
+<script>
+newLocation = 'index.html';
+oldLocation = 'http://www.google.com.tw';
+
+function goLocation(loc)
+{
+	window.location.href = loc;
+}
+</script>
+<input type=button class='button'  value='Enter New Version' onclick='goLocation(newLocation)'/>
+<input type=button class='button'  value='Enter Old Version' onclick='goLocation(oldLocation)'/>
+</body>
+</html>
