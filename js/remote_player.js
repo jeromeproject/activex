@@ -309,11 +309,11 @@ function init()
 		set_filter_today();	
 		var tree = get_tree_from_parent("maintree");
 		var info = get_server_info_with_select(tree);
-		var address = info[0];
-		var port = info[1];
-		var user = info[2];
-		var passwd = info[3];
-		var map = info[4];
+		var address = info.address;
+		var port = info.port;
+		var user = info.user;
+		var passwd = info.passwd;
+		var map = info.map;	//g_max_channel
 		RemotePlayer.ComSetupConnect(g_PLAYER_INDEX, address, port, user, passwd, undefined, undefined, undefined, undefined, map[channel]);
 		RemotePlayer.ComEmbedPlayer(0);
 		intervalID = window.setInterval("get_filelist()", 500);

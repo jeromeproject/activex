@@ -3,3 +3,5 @@
 	width: 45px;
 	height: 35px;
 }
+
+.button.clickableText { background:none;border:none; }

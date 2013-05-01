@@ -21,14 +21,14 @@ function get_server_info_with_select(tree)
 {
 	var node = tree_get_current_node(tree);
 	node = get_top_node(node);
-
-	var info = new Array();
-	info[0] = node.address;
-	info[1] = node.port;
-	info[2] = node.username;
-	info[3] = node.passwd;
-	info[4] = node.map;
-	return info;
+	return node;
+	// var info = new Array();
+	// info[0] = node.address;
+	// info[1] = node.port;
+	// info[2] = node.username;
+	// info[3] = node.passwd;
+	// info[4] = node.map;
+	// return info;
 }
 
 function tree_disable_collapse()

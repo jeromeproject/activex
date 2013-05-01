@@ -5,56 +5,65 @@
 	<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript" src="js/jquery.ztree.core-3.5.js"></script>
 	<script type="text/javascript" src="js/library.js"></script>
+	<script type="text/javascript" src="js/db_cookie.js"></script>
 	<script type="text/javascript" src="js/tree.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
-	<SCRIPT type="text/javascript">
-		var setting = 
-		{
-			callback: 
-			{
-				//beforeExpand:tree_disable_expand,
-				//beforeCollapse:tree_disable_collapse
-				//onCollapse: tree_update_node,
-				//onExpand: tree_update_node
-				onClick: show_node_information
-			},			
-			data:
-			{
-				keep:
-				{
-					parent: true
-				}
-			},
-			view:
-			{
-				showIcon:true
-			}
-		};
-
-		var zNodes =
-		[
-		];
-
-		$(document).ready(function(){
-			$.fn.zTree.init($("#maintree"), setting, zNodes);
-		});
-	</SCRIPT>
-
 </head>
 <body onload="init()">
 	<OBJECT ID='viewer' CLASSID='CLSID:E10658C9-3989-49B3-A2E3-FD9CBD8F42B3' codebase='ocx/RemoteViewer.ocx' width=0 height=0></OBJECT>
 	<table border=1 width=100% height=100%>
 		<tr>
 			<td width=10%>
-				Address<input id=new_address type=text></input><br>
-				Port<input id=new_port type=text></input><br>
-				User<input id=new_user type=text></input><br>
-				Passwd<input id=new_passwd type=password></input><br>
-				Channel Number:<br>
-				視界1<input id=map_ch0 type=text maxlength="3" size="3"></input><br>
-				視界2<input id=map_ch1 type=text maxlength="3" size="3"></input><br>
-				視界3<input id=map_ch2 type=text maxlength="3" size="3"></input><br>
-				視界4<input id=map_ch3 type=text maxlength="3" size="3"></input><br>
+				Group Name<input id=new_group type=text></input><br>
+				<button id="dvr1_button" class="clickableText">DVR1:</button><br>
+				<div id="dvr1" style="display:none;">
+					Address<input id=new_address1 type=text></input><br>
+					Port<input id=new_port1 type=text></input><br>
+					User<input id=new_user1 type=text></input><br>
+					Passwd<input id=new_passwd1 type=password></input><br>
+					Channel Number:<br>
+					視界1<input id=map1_ch0 type=text maxlength="3" size="3"></input><br>
+					視界2<input id=map1_ch1 type=text maxlength="3" size="3"></input><br>
+					視界3<input id=map1_ch2 type=text maxlength="3" size="3"></input><br>
+					視界4<input id=map1_ch3 type=text maxlength="3" size="3"></input><br>
+				</div>
+				<button id="dvr2_button" class="clickableText">DVR2:</button><br>
+				<div id="dvr2" style="display:none;">
+					Address<input id=new_address2 type=text></input><br>
+					Port<input id=new_port2 type=text></input><br>
+					User<input id=new_user2 type=text></input><br>
+					Passwd<input id=new_passwd2 type=password></input><br>
+					Channel Number:<br>
+					視界1<input id=map2_ch0 type=text maxlength="3" size="3"></input><br>
+					視界2<input id=map2_ch1 type=text maxlength="3" size="3"></input><br>
+					視界3<input id=map2_ch2 type=text maxlength="3" size="3"></input><br>
+					視界4<input id=map2_ch3 type=text maxlength="3" size="3"></input><br>
+				</div>
+				<button id="dvr3_button" class="clickableText">DVR3:</button><br>
+				<div id="dvr3" style="display:none;">
+					Address<input id=new_address3 type=text></input><br>
+					Port<input id=new_port3 type=text></input><br>
+					User<input id=new_user3 type=text></input><br>
+					Passwd<input id=new_passwd3 type=password></input><br>
+					Channel Number:<br>
+					視界1<input id=map3_ch0 type=text maxlength="3" size="3"></input><br>
+					視界2<input id=map3_ch1 type=text maxlength="3" size="3"></input><br>
+					視界3<input id=map3_ch2 type=text maxlength="3" size="3"></input><br>
+					視界4<input id=map3_ch3 type=text maxlength="3" size="3"></input><br>
+				</div>
+				<button id="dvr4_button" class="clickableText">DVR4:</button><br>
+				<div id="dvr4" style="display:none;">
+					Address<input id=new_address4 type=text></input><br>
+					Port<input id=new_port4 type=text></input><br>
+					User<input id=new_user4 type=text></input><br>
+					Passwd<input id=new_passwd4 type=password></input><br>
+					Channel Number:<br>
+					視界1<input id=map4_ch0 type=text maxlength="3" size="3"></input><br>
+					視界2<input id=map4_ch1 type=text maxlength="3" size="3"></input><br>
+					視界3<input id=map4_ch2 type=text maxlength="3" size="3"></input><br>
+					視界4<input id=map4_ch3 type=text maxlength="3" size="3"></input><br>
+				</div>
+				<!--
 				視界5<input id=map_ch4 type=text maxlength="3" size="3"></input><br>
 				視界6<input id=map_ch5 type=text maxlength="3" size="3"></input><br>
 				視界7<input id=map_ch6 type=text maxlength="3" size="3"></input><br>
@@ -66,11 +75,11 @@
 				視界13<input id=map_ch12 type=text maxlength="3" size="3"></input><br>
 				視界14<input id=map_ch13 type=text maxlength="3" size="3"></input><br>
 				視界15<input id=map_ch14 type=text maxlength="3" size="3"></input><br>
-				視界16<input id=map_ch15 type=text maxlength="3" size="3"></input><br>
+				視界16<input id=map_ch15 type=text maxlength="3" size="3"></input><br>-->
 				<table>
 					<tr>
 						<td>
-						<input type=image id='add' class='button' src="css/web/img/add.png" onclick='add_server()' title="新增"/>
+ 						<input type=image id='add' class='button' src="css/web/img/add.png" onclick='add_new_group()' title="新增"/>
 						<input type=image id='update' class='button' src="css/web/img/update.png" onclick='update_server()' title="更新"/>
 						<!--
 					<input type=button id=add class='button' style="display:inline;background-image:url('css/web/img/add.png')" onclick='add_server()'/>
@@ -87,6 +96,7 @@
 					</tr>
 				</table>
 				<div id='maintree' class="ztree"></div>
+				<div id='dvr_data'></div>
 			</td>
 			<td width=85%>
 				<iframe 

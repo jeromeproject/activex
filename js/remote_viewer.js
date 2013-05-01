@@ -1,6 +1,7 @@
-var g_max_channel = 16;		// every js has this variable
+var g_max_channel = 4;		// every js has this variable
 var g_type;  // 0: seperate to 4 windows, 1: single window, 2: parent-child
 var g_max_channel_num = [g_max_channel, g_max_channel, g_max_channel, g_max_channel];	// showing sets of camera status in different view
+var g_selected_channel_data; //set by parent
 
 // get input parameters from url after '?'
 function get_input_params()
@@ -298,14 +299,13 @@ function init_viewer(max_channel, open_channel)
 	//var channel_map = [0, 1, 2, 3];
 
 	var tree = get_tree_from_parent("maintree");
-
 	// [address, port, user, passwd, map]
 	var info = get_server_info_with_select(tree);
-	var address = info[0];
-	var port = info[1];
-	var user = info[2];
-	var passwd = info[3];
-	var channel_map = info[4];	//g_max_channel
+	var address = info.address;
+	var port = info.port;
+	var user = info.user;
+	var passwd = info.passwd;
+	var channel_map = info.map;	//g_max_channel
 	if(g_type == '2')
 	{
 		// need to change major channel
