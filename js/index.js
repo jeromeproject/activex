@@ -340,7 +340,7 @@ function tree_add_new_group(group, value)
 				username:col[2],
 				passwd:col[3],
 				name:col[0],
-				map:col[4],
+				map:col[4].split(','),
 				children:
 				[
 					{ 
@@ -417,7 +417,7 @@ function update_server()
 		group_node.name = document.getElementById('new_group').value;
 		var value = '';
 		var group_child_nodes = group_node.children;
-		for(i=1, x=1; i<=group_child_nodes.length; ++i, ++x)
+		for(i=1, x=1; i<group_child_nodes.length; ++i, ++x)
 		{
 			var dvr_node = group_node.children[i]; // the first node is for all in one, so we ignore it
 			dvr_node.name = document.getElementById('new_address' + x).value;
