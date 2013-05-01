@@ -22,7 +22,13 @@ function update_content(src)
 
 function set_liveview(type, channel)
 {
-	src = "remote_viewer.html?type="+type+"&channel="+channel;
+	src = "remote_viewer.html?groupdvr=false&type="+type+"&channel="+channel;
+	update_content(src);
+}
+
+function set_liveview_16(type, channel)
+{
+	src = "remote_viewer16.html?groupdvr=true&type="+type+"&channel="+channel;
 	update_content(src);
 }
 
@@ -214,13 +220,14 @@ function show_node_information(event, treeid, node)
 	var group_node = tree_get_group_node(node);
 	document.getElementById('new_group').value = group_node.name;
 	var group_child_nodes = group_node.children
-	for(i=1; i<=group_child_nodes.length; ++i) {
-		var dvr_node = group_child_nodes[i-1];
-		document.getElementById('new_address'+i).value = dvr_node.address;
-		document.getElementById('new_port'+i).value = dvr_node.port;
-		document.getElementById('new_user'+i).value = dvr_node.username;
-		document.getElementById('new_passwd'+i).value = dvr_node.passwd;
-		load_map_to_ui('map'+i+'_ch', dvr_node.map, g_max_channel);
+
+	for(i=1, x=1; i<group_child_nodes.length; ++i, ++x) {
+		var dvr_node = group_child_nodes[i];	// the first node is for all in one
+		document.getElementById('new_address'+x).value = dvr_node.address;
+		document.getElementById('new_port'+x).value = dvr_node.port;
+		document.getElementById('new_user'+x).value = dvr_node.username;
+		document.getElementById('new_passwd'+x).value = dvr_node.passwd;
+		load_map_to_ui('map'+x+'_ch', dvr_node.map, g_max_channel);
 	}
 	update_mode();
 }
@@ -251,10 +258,6 @@ function tree_group_add_server(group_node, ip, port, user, passwd, map)
 			[
 				{ 
 					name:"LiveView", 
-					click:"set_liveview('0', '0')"
-				},
-				{ 
-					name:"LiveView All in one", 
 					click:"set_liveview('0', '0')"
 				},
 				{ 
@@ -304,6 +307,11 @@ function tree_add_group(group)
 		name:group,
 		is_group:true,
 		gvalue:'',
+		children: [
+		{ 
+			name:"LiveView All in one", 
+			click:"set_liveview_16('3', '0')"
+		}]
 	}];
 	return parent_node = tree.addNodes(undefined, new_group, 0);
 }
@@ -340,10 +348,6 @@ function tree_add_new_group(group, value)
 						click:"set_liveview('0', '0')"
 					},
 					{ 
-						name:"LiveView All in one", 
-						click:"set_liveview('0', '0')"
-					},
-					{ 
 						name:"Playback",
 						open:true,
 						children: 
@@ -372,6 +376,7 @@ function tree_add_new_group(group, value)
 		tree.addNodes(parent_node[0], new_dvr, 0);
 	// tree.updateNode(node, true);
 	}
+	
 	clear_node_information();
 	return true;
 }
@@ -412,17 +417,17 @@ function update_server()
 		group_node.name = document.getElementById('new_group').value;
 		var value = '';
 		var group_child_nodes = group_node.children;
-		for(i=1; i<=group_child_nodes.length; ++i)
+		for(i=1, x=1; i<=group_child_nodes.length; ++i, ++x)
 		{
-			var dvr_node = group_node.children[i-1];
-			dvr_node.name = document.getElementById('new_address' + i).value;
-			dvr_node.address = document.getElementById('new_address' + i).value;
-			dvr_node.port = document.getElementById('new_port' + i).value;
-			dvr_node.username = document.getElementById('new_user' + i).value;
-			dvr_node.passwd = document.getElementById('new_passwd' + i).value;
-			dvr_node.map = load_map_from_ui('map' + i + '_ch', g_max_channel);
+			var dvr_node = group_node.children[i]; // the first node is for all in one, so we ignore it
+			dvr_node.name = document.getElementById('new_address' + x).value;
+			dvr_node.address = document.getElementById('new_address' + x).value;
+			dvr_node.port = document.getElementById('new_port' + x).value;
+			dvr_node.username = document.getElementById('new_user' + x).value;
+			dvr_node.passwd = document.getElementById('new_passwd' + x).value;
+			dvr_node.map = load_map_from_ui('map' + x + '_ch', g_max_channel);
 			value += dvr_node.address + FIELD_SPLIT_CHAR + dvr_node.port + FIELD_SPLIT_CHAR + dvr_node.username + FIELD_SPLIT_CHAR + dvr_node.passwd + FIELD_SPLIT_CHAR + dvr_node.map;
-			if( i != g_max_dvr )
+			if( x != g_max_dvr )
 				value += ROW_SPLIT_CHAR;
 			// alert(value);
 			tree.updateNode(dvr_node);
