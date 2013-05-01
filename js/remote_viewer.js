@@ -303,9 +303,14 @@ function init_viewer(max_channel, open_channel)
 	var info = get_server_info_with_select(tree);
 	var address = info.address;
 	var port = info.port;
-	var user = info.user;
+	var user = info.username;
 	var passwd = info.passwd;
 	var channel_map = info.map;	//g_max_channel
+	// alert(address);
+	// alert(port);
+	// alert(user);
+	// alert(passwd);
+	// alert(channel_map);
 	if(g_type == '2')
 	{
 		// need to change major channel

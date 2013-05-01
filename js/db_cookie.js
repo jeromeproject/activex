@@ -48,8 +48,3 @@ function db_del(name)
 {
 	del_cookie(name);
 }
-
-function db_get(name)
-{
-	return get_cookie_name(name);
-}

@@ -1,12 +1,5 @@
 var g_max_channel = 4;		// every js has this variable
-var g_selected_channel_data = [{
-				address: '0.0.0.0',
-				port:17860,
-				username:'Admin',
-				passwd:'',
-				name:'UNDEFINED',
-				map:'1,2,3,4' }];
-
+var g_max_dvr = 4;
 FIELD_SPLIT_CHAR = ":"
 ROW_SPLIT_CHAR = "+"
 MAP_CH_PREFIX = "map1_ch"
@@ -27,7 +20,7 @@ function update_content(src)
 	iframe.src = src;
 }
 
-function set_liveview(node, type, channel)
+function set_liveview(type, channel)
 {
 	src = "remote_viewer.html?type="+type+"&channel="+channel;
 	update_content(src);
@@ -52,32 +45,6 @@ function get_server_info()
 		document.getElementById('server_st').innerHTML = "0";
 }
 
-function init_old_tree()
-{
-	if(document.cookie.length == 0)
-		return;
-
-	var cookies = document.cookie.split(';');
-	var i;
-	for(i=0; i<cookies.length; i++)
-	{
-		// cookie format 
-		// ip:port=username,passwd,map1,map2,map3,map4;
-		var tmp = cookies[i].split('=');
-		var ip = tmp[0].split(':')[0];
-		var port = tmp[0].split(':')[1];
-		var user = tmp[1].split(',')[0];
-		var passwd = tmp[1].split(',')[1];
-		var map = new Array();
-		var j;
-		for(j=0; j<tmp[1].split(',').length-2; j++)
-		{
-			map[j] = tmp[1].split(',')[j+2];
-		}
-		tree_add_server(ip, port, user, passwd, map);
-	}
-}
-
 function init_tree()
 {
 	if(document.cookie.length == 0)
@@ -92,7 +59,7 @@ function init_tree()
 		var tmp = cookies[i].split('=');
 		var group_name = tmp[0];
 		group_node = tree_add_group(group_name);
-		var rows = tmp[1].split(FIELD_SPLIT_CHAR);
+		var rows = tmp[1].split(ROW_SPLIT_CHAR);
 		for(j = 0; j < rows.length; ++j)
 		{
 			var val = rows[j].split(FIELD_SPLIT_CHAR);
@@ -140,7 +107,7 @@ function init()
 	});
 	//window.setInterval("get_server_info()", 5000);
 	add_mode();
-	// init_tree();
+	init_tree();
 	document.getElementById("dvr1_button").onclick= function() {
 		set_elem_show('dvr1');
 		set_elem_hide('dvr2');
@@ -178,7 +145,7 @@ function add_mode()
 	set_elem_show('add');
 	set_elem_hide('update');
 	set_elem_hide('delete');
-	set_elem_hide('cancel');
+	// set_elem_hide('cancel');
 }
 
 function update_mode()
@@ -190,12 +157,12 @@ function update_mode()
 }
 
 // map value control
-function load_map_to_ui(map_array, max_chn)
+function load_map_to_ui(prefix, map_array, max_chn)
 {
 	var i;
 	for(i=0; i<max_chn; i++)
 	{
-		var id = MAP_CH_PREFIX+i;
+		var id = prefix+i;
 		document.getElementById(id).value = parseInt(map_array[i], 10)+1;
 	}
 }
@@ -217,73 +184,69 @@ function load_map_from_ui(prefix, max_chn)
 	for(i=0; i<max_chn; i++)
 	{
 		var id = prefix+i;
+		// alert(id);
 		var value = document.getElementById(id).value;
 		if(value == "")
 			value = "0";
 		// user input 1~n, we need 0~n-1
 		map_array[i] = parseInt(value, 10)-1;
 	}
+	// alert(map_array);
 	return map_array;
 }
 
 // input columne control
 function clear_node_information()
 {
-/*
-	document.getElementById('new_address').value = "";
-	document.getElementById('new_port').value = "";
-	document.getElementById('new_user').value = "";
-	document.getElementById('new_passwd').value = "";
-	clear_map_ui(MAP_CH_PREFIX, g_max_channel);
-*/
+	document.getElementById('new_group').value = "";
+	for(i=1; i<=g_max_dvr; ++i)
+	{
+		document.getElementById('new_address'+i).value = "";
+		document.getElementById('new_port'+i).value = "";
+		document.getElementById('new_user'+i).value = "";
+		document.getElementById('new_passwd'+i).value = "";
+		clear_map_ui('map'+i+'_ch', g_max_channel);
+	}
 }
 
 function show_node_information(event, treeid, node)
 {
-/*
-	var top_node = get_top_node(node);
-	document.getElementById('new_address').value = top_node.address;
-	document.getElementById('new_port').value = top_node.port;
-	document.getElementById('new_user').value = top_node.username;
-	document.getElementById('new_passwd').value = top_node.passwd;
-	load_map_to_ui(top_node.map, g_max_channel);
-*/
+	var group_node = tree_get_group_node(node);
+	document.getElementById('new_group').value = group_node.name;
+	var group_child_nodes = group_node.children
+	for(i=1; i<=group_child_nodes.length; ++i) {
+		var dvr_node = group_child_nodes[i-1];
+		document.getElementById('new_address'+i).value = dvr_node.address;
+		document.getElementById('new_port'+i).value = dvr_node.port;
+		document.getElementById('new_user'+i).value = dvr_node.username;
+		document.getElementById('new_passwd'+i).value = dvr_node.passwd;
+		load_map_to_ui('map'+i+'_ch', dvr_node.map, g_max_channel);
+	}
 	update_mode();
 }
 
 function cancel()
 {
-/*	
-	document.getElementById('new_address').value = "";
-	document.getElementById('new_port').value = "";
-	document.getElementById('new_user').value = "";
-	document.getElementById('new_passwd').value = "";
-	clear_map_ui(MAP_CH_PREFIX, g_max_channel);
-*/
+	clear_node_information();
 	add_mode();
 
 }
 
-function tree_add_server(new_address, new_port, new_user, new_passwd, new_map)
+function tree_group_add_server(group_node, ip, port, user, passwd, map)
 {	
 	var tree = get_tree('maintree');
-	var node = tree.getNodesByParam('name', new_address)[0];
-	if(node)
-	{
-		alert("This address is already exists.");
-		return;
-	}
+	var parent_node = group_node;
 
-	var new_server =
+	var new_dvr =
 	[
 		{
-			is_top:true,
-			address:new_address,
-			port:new_port,
-			username:new_user,
-			passwd:new_passwd,
-			name:new_address,
-			map:new_map,
+			is_dvr:true,
+			address:ip,
+			port:port,
+			username:user,
+			passwd:passwd,
+			map:map,
+			name:ip, //+':'+port+'('+map+')',
 			children:
 			[
 				{ 
@@ -291,60 +254,7 @@ function tree_add_server(new_address, new_port, new_user, new_passwd, new_map)
 					click:"set_liveview('0', '0')"
 				},
 				{ 
-					name:"Playback",
-					open:true,
-					children: 
-					[
-						{ 
-							name: "Channel1",
-							click:"set_playback('0')"
-						},
-						{ 
-							name: "Channel2",
-							click:"set_playback('1')"
-						},
-						{ 
-							name: "Channel3",
-							click:"set_playback('2')"
-						},
-						{ 
-							name: "Channel4",
-							click:"set_playback('3')"
-						}
-					]
-				},
-			]
-		}
-	];
-
-	// add cookie
-	var name = new_address+":"+new_port;
-	var value = new_user+","+new_passwd+","+new_map;
-	db_add(name, value);	
-	
-	tree.addNodes(undefined, new_server, 0);
-	clear_node_information();
-	add_mode();
-}
-
-function tree_group_add_server(group_node, ip, port, user, passwd, map);
-{	
-	var parent_node = group_node;
-
-	var new_dvr =
-	[
-		{
-			is_top:true,
-			address:ip,
-			port:port,
-			username:user,
-			passwd:passwd,
-			map:ip,
-			name:map,
-			children:
-			[
-				{ 
-					name:"LiveView", 
+					name:"LiveView All in one", 
 					click:"set_liveview('0', '0')"
 				},
 				{ 
@@ -386,37 +296,25 @@ function tree_add_group(group)
 	if(node)
 	{
 		alert("This group name is already exists.");
-		return;
+		return undefined;
 	}
 
 	var new_group =
 	[{
 		name:group,
-		gvalue:value,
+		is_group:true,
+		gvalue:'',
 	}];
-
-	clear_node_information();
-	add_mode();
 	return parent_node = tree.addNodes(undefined, new_group, 0);
 }
 
 function tree_add_new_group(group, value)
 {	
 	var tree = get_tree('maintree');
-	var node = tree.getNodesByParam('name', group)[0];
-	if(node)
-	{
-		alert("This group name is already exists.");
-		return;
-	}
 
-	var new_group =
-	[{
-		name:group,
-		gvalue:value,
-	}];
-
-	var parent_node = tree.addNodes(undefined, new_group, 0);
+	var parent_node = tree_add_group(group);
+	if(parent_node == undefined)
+		return false;
 
 	var row = value.split(ROW_SPLIT_CHAR);
 	
@@ -428,7 +326,7 @@ function tree_add_new_group(group, value)
 		var new_dvr =
 		[
 			{
-				is_top:true,
+				is_dvr:true,
 				address: col[0],
 				port:col[1],
 				username:col[2],
@@ -439,6 +337,10 @@ function tree_add_new_group(group, value)
 				[
 					{ 
 						name:"LiveView", 
+						click:"set_liveview('0', '0')"
+					},
+					{ 
+						name:"LiveView All in one", 
 						click:"set_liveview('0', '0')"
 					},
 					{ 
@@ -468,36 +370,18 @@ function tree_add_new_group(group, value)
 			}
 		];
 		tree.addNodes(parent_node[0], new_dvr, 0);
+	// tree.updateNode(node, true);
 	}
-	db_add(group, value);
-	
 	clear_node_information();
-	add_mode();
-}
-
-function add_server()
-{
-	var new_address = document.getElementById('new_address').value;
-	var new_port = document.getElementById('new_port').value;
-	var new_user = document.getElementById('new_user').value;
-	var new_passwd = document.getElementById('new_passwd').value;
-	var new_map = load_map_from_ui(MAP_CH_PREFIX, g_max_channel);
-	if(new_address.length == 0 || new_port.length == 0 || new_user.length == 0)
-	{
-		alert("invalid parameter");
-		return -1;
-	}
-
-	tree_add_server(new_address, new_port, new_user, new_passwd, new_map);
-	return 0;
+	return true;
 }
 
 function add_new_group()
 {
+	var tree = get_tree('maintree');
 	var group = document.getElementById('new_group').value;
 	var value = '';
-	var maxdvr = 4;
-	for(i = 1; i <= maxdvr ; ++i)
+	for(i = 1; i <= g_max_dvr ; ++i)
 	{
 		var addr = document.getElementById('new_address' + i).value;
 		var port = document.getElementById('new_port' + i).value;
@@ -505,47 +389,64 @@ function add_new_group()
 		var passwd = document.getElementById('new_passwd' + i).value;
 		var views = load_map_from_ui('map' + i + '_ch', g_max_channel);
 		value += addr + FIELD_SPLIT_CHAR + port + FIELD_SPLIT_CHAR + user + FIELD_SPLIT_CHAR + passwd + FIELD_SPLIT_CHAR + views;
-		if( i != maxdvr )
+		if( i != g_max_dvr )
 			value += ROW_SPLIT_CHAR;
 		// alert(value);
 	}
-	tree_add_new_group(group, value);
+	if(tree_add_new_group(group, value))
+	{
+		db_add(group, value);
+		add_mode();
+	}
 }
 
 function update_server()
 {
 	var tree = get_tree('maintree');
 	var node = tree_get_current_node(tree);
-	node = get_top_node(node);
+	var group_node = tree_get_group_node(node);
 
-	del_cookie(get_cookie_name(node));
-
-	node.address = document.getElementById("new_address").value;
-	node.name = node.address;
-	node.port = document.getElementById("new_port").value;
-	node.user = document.getElementById("new_user").value;
-	node.passwd = document.getElementById("new_passwd").value;
-	node.map = load_map_from_ui(MAP_CH_PREFIX, g_max_channel);
-
-	db_add(get_cookie_name(node), get_cookie_value(node));
-
-	tree.updateNode(node, true);
-	clear_node_information();
-	add_mode();
-	reload_iframe();	
+	if(group_node.is_group)
+	{
+		db_del(group_node.name);
+		group_node.name = document.getElementById('new_group').value;
+		var value = '';
+		var group_child_nodes = group_node.children;
+		for(i=1; i<=group_child_nodes.length; ++i)
+		{
+			var dvr_node = group_node.children[i-1];
+			dvr_node.name = document.getElementById('new_address' + i).value;
+			dvr_node.address = document.getElementById('new_address' + i).value;
+			dvr_node.port = document.getElementById('new_port' + i).value;
+			dvr_node.username = document.getElementById('new_user' + i).value;
+			dvr_node.passwd = document.getElementById('new_passwd' + i).value;
+			dvr_node.map = load_map_from_ui('map' + i + '_ch', g_max_channel);
+			value += dvr_node.address + FIELD_SPLIT_CHAR + dvr_node.port + FIELD_SPLIT_CHAR + dvr_node.username + FIELD_SPLIT_CHAR + dvr_node.passwd + FIELD_SPLIT_CHAR + dvr_node.map;
+			if( i != g_max_dvr )
+				value += ROW_SPLIT_CHAR;
+			// alert(value);
+			tree.updateNode(dvr_node);
+		}
+		db_add(group_node.name, value);
+		tree.updateNode(group_node);
+		tree.reAsyncChildNodes(group_node, "refresh");
+		clear_node_information();
+		add_mode();
+		reload_iframe();
+	}
 }
 
 function delete_server()
 {	
 	var tree = get_tree('maintree');
 	var node = tree_get_current_node(tree);
-	node = get_top_node(node);
-
-	del_cookie(get_cookie_name(node));
-
-	tree.removeChildNodes(node);
-	tree.removeNode(node);
-	clear_node_information();
-	add_mode();
-	update_content('tip_page.html');
+	if(node.is_group)
+	{
+		db_del(node.name);
+		tree.removeChildNodes(node);
+		tree.removeNode(node);
+		clear_node_information();
+		add_mode();
+		update_content('tip_page.html');
+	}
 }

@@ -311,7 +311,7 @@ function init()
 		var info = get_server_info_with_select(tree);
 		var address = info.address;
 		var port = info.port;
-		var user = info.user;
+		var user = info.username;
 		var passwd = info.passwd;
 		var map = info.map;	//g_max_channel
 		RemotePlayer.ComSetupConnect(g_PLAYER_INDEX, address, port, user, passwd, undefined, undefined, undefined, undefined, map[channel]);

@@ -8,9 +8,18 @@ function get_tree(tree_name)
 	return $.fn.zTree.getZTreeObj(tree_name);
 }
 
-function get_top_node(node)
+function tree_get_dvr_node(node)
 {
-	while(typeof node.is_top == "undefined")
+	while(typeof node.is_dvr == "undefined")
+	{
+		node = node.getParentNode();
+	}
+	return node;
+}
+
+function tree_get_group_node(node)
+{
+	while(typeof node.is_group == "undefined")
 	{
 		node = node.getParentNode();
 	}
@@ -20,7 +29,7 @@ function get_top_node(node)
 function get_server_info_with_select(tree)
 {
 	var node = tree_get_current_node(tree);
-	node = get_top_node(node);
+	node = tree_get_dvr_node(node);
 	return node;
 	// var info = new Array();
 	// info[0] = node.address;
