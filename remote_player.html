@@ -42,7 +42,7 @@
 			$(document).ready(function()
 			{
 				zTreeObj = $.fn.zTree.init($("#filetree"), setting, nodes);
-				$("#speed").msDropdown();
+				// $("#speed").msDropdown();
 			});
 		</script>
 	</HEAD>
@@ -107,9 +107,12 @@
 					<input type=image class='button' src="css/web/img/seek_forward.png" onclick='seekforward()' title="加速"/>
 				</td>
 				<td>
-					<select id='speed'  title="速度">
+					<select id='speed_value'  title="速度">
 						<option value='0.25'>0.25X</option>
+						<option value='1' selected>1X</option>
+						<option value='2'>2X</option>
 						<option value='4'>4X</option>
+						<option value='8'>8X</option>
 						<option value='10'>10X</option>
 						<option value='30'>30X</option>
 						<option value='90'>90X</option>

@@ -63,8 +63,8 @@ function set_player_action(action)
 	acts['RPP_SeekBegin_PI'] = 19;
 	acts['RPP_SeekEnd_PI'] = 20;
 	// end mapping
-	
-	var speed = parseFloat(document.getElementById('speed').value);
+	var speed = parseFloat(document.getElementById('speed_value').value);
+	// alert(speed);
 	RemotePlayer.ComPlayback(g_PLAYER_INDEX, acts[action], speed, 0);
 }
 
