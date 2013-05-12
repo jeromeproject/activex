@@ -313,7 +313,7 @@ function tree_add_group(group)
 			click:"set_liveview_16('3', '0')"
 		}]
 	}];
-	return parent_node = tree.addNodes(undefined, new_group, 0);
+	return parent_node = tree.addNodes(null, new_group, 0);
 }
 
 function tree_add_new_group(group, value)
@@ -321,7 +321,7 @@ function tree_add_new_group(group, value)
 	var tree = get_tree('maintree');
 
 	var parent_node = tree_add_group(group);
-	if(parent_node == undefined)
+	if(parent_node == null)
 		return false;
 
 	var row = value.split(ROW_SPLIT_CHAR);
