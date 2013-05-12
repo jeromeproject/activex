@@ -1,8 +1,8 @@
 var g_max_channel = 4;		// every js has this variable
 var g_max_dvr = 4;
-FIELD_SPLIT_CHAR = ":"
-ROW_SPLIT_CHAR = "+"
-MAP_CH_PREFIX = "map1_ch"
+FIELD_SPLIT_CHAR = ":";
+ROW_SPLIT_CHAR = "+";
+MAP_CH_PREFIX = "map1_ch";
 
 function set_elem_hide(elem_id)
 {
